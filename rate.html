@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rate Players - Redcar Old Boys</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Club header -->
+    <header class="club-header">
+        <img src="robfc_logo.png" alt="ROB FC Logo" class="club-logo">
+        <h1>Redcar Old Boys – Match Ratings</h1>
+    </header>
+
+    <div class="container">
+        <h2>Rate Players</h2>
+
+        <!-- Match Details -->
+        <div id="matchInfo" class="match-info"></div>
+
+        <!-- Player + Rating table -->
+        <div class="player-rating-section">
+            <table class="player-rating-table">
+                <thead>
+                    <tr class="main-header">
+                        <th class="header-player">Player</th>
+                        <th class="header-rating">Your Rating</th>
+                        <th class="header-average">Average</th>
+                    </tr>
+                    <tr class="sub-header">
+                        <td colspan="3">
+                            <span class="rating-scale">
+                                <strong>Rating Guide:</strong> 1 = Poor → 10 = Messi‑like | DNP = Did Not Play
+                            </span>
+                        </td>
+                    </tr>
+                </thead>
+
+                <tbody id="playerRatingBody"></tbody>
+            </table>
+        </div>
+
+        <button class="rate-button" onclick="saveRatings()">Save Ratings</button>
+        <button class="rate-button" onclick="goBack()">Back to Matches</button>
+    </div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+<script>
+  // 🔹 Firebase configuration
+  const firebaseConfig = {
+  apiKey: "AIzaSyCLLsZUdD9nNHxHU5M9hOWPZkl25e3iq9Y",
+  authDomain: "redcar-ratings.firebaseapp.com",
+  databaseURL: "https://redcar-ratings-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "redcar-ratings",
+  storageBucket: "redcar-ratings.appspot.com",
+  messagingSenderId: "360401254056",
+  appId: "1:360401254056:web:d91fb63e5f95c6e790349d"
+};
+
+  // 🔹 Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+</script>
+
+
+<script>
+    /* ---------------------------
+       Load Selected Match
+    ---------------------------- */
+    const match = JSON.parse(localStorage.getItem("selectedMatch"));
+
+    /* ---------------------------
+       Player List (Alphabetical by Surname)
+    ---------------------------- */
+    const players = [
+        "Justin Armstrong",
+        "David Aspin",
+        "Lee Backhouse",
+        "Nicholas Barclay",
+        "Kevin Barnes",
+        "Shane Barnes",
+        "Clive Beckett",
+        "Russell Beckett",
+        "Karl Bongi",
+        "Paul Bringloe",
+        "John Carless",
+        "Adam Cowen",
+        "Michael Dass",
+        "Simon Dove",
+        "Alexander Fox",
+        "Graeme Garrett",
+        "Michael Griffiths",
+        "Andrew Hamilton",
+        "Darren Henry",
+        "Nicky Hoggarth",
+        "Craig Honeyman",
+        "Daniel Honeyman",
+        "Mark Iseton",
+        "Philip Luke",
+        "Dave Moran",
+        "Paul Neesam",
+        "Nicholas Owen",
+        "Mark Paisley",
+        "Mark Richardson",
+        "Shane Robertson",
+        "Jonathan Scott",
+        "Robert Walker",
+        "Tim Walmsley",
+        "Lee Wells",
+        "Gary Wing",
+        "Ian Young"
+    ];
+
+    /* ---------------------------
+       Display Match Info
+    ---------------------------- */
+    const matchInfo = document.getElementById("matchInfo");
+
+    if (match) {
+        matchInfo.innerHTML = `
+            <h3>Match Details</h3>
+            <p><strong>Date:</strong> ${match.date}</p>
+            <p><strong>Opponent:</strong> ${match.opponent}</p>
+            <p><strong>Location:</strong> ${match.location}</p>
+        `;
+    } else {
+        matchInfo.innerHTML = "<p>No match selected.</p>";
+    }
+
+    /* ---------------------------
+       Build Player Rating Rows
+    ---------------------------- */
+    const body = document.getElementById("playerRatingBody");
+    const ratings = {};
+
+    players.forEach((player, index) => {
+        const row = document.createElement("tr");
+
+        const playerCell = document.createElement("td");
+        playerCell.textContent = player;
+
+        const ratingCell = document.createElement("td");
+        const select = document.createElement("select");
+        select.classList.add("rating-dropdown");
+
+        select.innerHTML = `
+            <option value="">Select rating</option>
+            ${Array.from({ length: 10 }, (_, i) => `<option value="${i + 1}">${i + 1}</option>`).join("")}
+            <option value="DNP">DNP</option>
+        `;
+
+        select.onchange = () => {
+            ratings[index] = select.value;
+        };
+
+        const averageCell = document.createElement("td");
+        averageCell.classList.add("average-cell");
+        averageCell.textContent = "-";
+
+        ratingCell.appendChild(select);
+        row.appendChild(playerCell);
+        row.appendChild(ratingCell);
+        row.appendChild(averageCell);
+        body.appendChild(row);
+    });
+
+    /* ---------------------------
+       Load ALL Ratings for This Match
+    ---------------------------- */
+    function loadAverages() {
+    db.ref(`ratings/${match.date}/${match.opponent}`).get().then(snapshot => {
+        const allRatings = snapshot.val();
+        if (!allRatings) return;
+
+        const averages = players.map((_, index) => {
+            let sum = 0;
+            let count = 0;
+
+            for (const userPIN in allRatings) {
+                const val = allRatings[userPIN][index];
+                if (val && val !== "DNP") {
+                    sum += Number(val);
+                    count++;
+                }
+            }
+
+            return count > 0 ? (sum / count).toFixed(2) : "-";
+        });
+
+        document.querySelectorAll(".average-cell").forEach((cell, index) => {
+            cell.textContent = averages[index];
+        });
+    });
+}
+
+
+/* ---------------------------
+   Load Current User's Ratings (if any)
+---------------------------- */
+db.ref(`ratings/${match.date}/${match.opponent}/${localStorage.getItem("currentUser")}`)
+  .get()
+  .then(snapshot => {
+      const savedRatings = snapshot.val();
+
+      if (savedRatings) {
+          document.querySelectorAll(".rating-dropdown").forEach((select, index) => {
+              const value = savedRatings[index];
+              if (value) select.value = value;
+          });
+
+          // Lock the dropdowns because this user already submitted
+          lockRatings();
+      }
+  })
+  .catch(error => {
+      console.error("Error loading user ratings:", error);
+  });
+
+/* ---------------------------
+   Load Averages (all users)
+---------------------------- */
+loadAverages();
+
+    function lockRatings() {
+        document.querySelectorAll(".rating-dropdown").forEach(drop => {
+            drop.disabled = true;
+        });
+
+        const saveBtn = document.querySelector(".rate-button");
+        saveBtn.textContent = "Ratings Submitted";
+        saveBtn.disabled = true;
+    }
+
+    /* ---------------------------
+       Save Ratings (per match + per user)
+    ---------------------------- */
+    function saveRatings() {
+    const user = localStorage.getItem("currentUser");
+
+    db.ref(`ratings/${match.date}/${match.opponent}/${user}`).set(ratings)
+        .then(() => {
+            alert("Ratings saved successfully!");
+            lockRatings();
+            loadAverages();
+        })
+        .catch(error => {
+            alert("Error saving ratings: " + error.message);
+        });
+}
+
+
+    /* ---------------------------
+       Navigation
+    ---------------------------- */
+    function goBack() {
+        window.location.href = "matches.html";
+    }
+
+</script>
+
+</body>
+</html>

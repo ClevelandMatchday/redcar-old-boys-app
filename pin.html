@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Enter PIN - Redcar Old Boys</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="club-header">
+        <img src="robfc_logo.png" alt="ROB FC Logo" class="club-logo">
+        <h1>Redcar Old Boys – Match Ratings</h1>
+    </header>
+
+
+    <div class="container">
+        <h1>Enter Your PIN</h1>
+
+        <div id="pinDisplay" class="pin-display">
+            <span class="dot" id="dot1"></span>
+            <span class="dot" id="dot2"></span>
+            <span class="dot" id="dot3"></span>
+            <span class="dot" id="dot4"></span>
+        </div>
+
+        <div class="keypad">
+            <button onclick="pressNumber(1)">1</button>
+            <button onclick="pressNumber(2)">2</button>
+            <button onclick="pressNumber(3)">3</button>
+
+            <button onclick="pressNumber(4)">4</button>
+            <button onclick="pressNumber(5)">5</button>
+            <button onclick="pressNumber(6)">6</button>
+
+            <button onclick="pressNumber(7)">7</button>
+            <button onclick="pressNumber(8)">8</button>
+            <button onclick="pressNumber(9)">9</button>
+
+            <button onclick="deleteNumber()">DEL</button>
+            <button onclick="pressNumber(0)">0</button>
+            <button onclick="submitPin()">⏎</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

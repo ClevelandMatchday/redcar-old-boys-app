@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Redcar Old Boys – Matches</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Club header -->
+    <header class="club-header">
+        <img src="robfc_logo.png" alt="ROB FC Logo" class="club-logo">
+        <h1>Redcar Old Boys – Match Ratings</h1>
+    </header>
+
+    <!-- Fixture list container -->
+    <div class="container">
+    <h2>2026/27 Fixtures</h2>
+
+    <table class="fixture-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Date</th>
+                <th>Opponent</th>
+                <th>Location</th>
+                <th>Rate Player</th>
+            </tr>
+        </thead>
+        <tbody id="fixtureList"></tbody>
+    </table>
+
+    <button class="rate-button" onclick="goHome()">Back to Home</button>
+</div>
+
+
+    <script src="app.js"></script>
+    <script>
+        // Fixture data
+        const fixtures = [
+            { opponent: "Prudhoe Youth Club", date: "08/08/26", location: "AWAY" },
+            { opponent: "Linthorpe Academicals", date: "19/08/26", location: "AWAY" },
+            { opponent: "Hazlerigg Victory", date: "22/08/26", location: "AWAY" },
+            { opponent: "Billingham The Owington Farm", date: "29/08/26", location: "AWAY" },
+            { opponent: "West Allotment Social Club", date: "05/09/26", location: "HOME" },
+            { opponent: "Sunderland Doxy Lad", date: "12/09/26", location: "HOME" },
+            { opponent: "Sunderland Ivy Legends", date: "19/09/26", location: "HOME" },
+            { opponent: "Sunderland Doxy Lad", date: "26/09/26", location: "HOME" },
+            { opponent: "South Shield Buzzers", date: "03/10/26", location: "HOME" },
+            { opponent: "Sunderland South Hylton", date: "10/10/26", location: "AWAY" },
+            { opponent: "Billingham The Owington Farm", date: "17/10/26", location: "HOME" },
+            { opponent: "Prudhoe Youth Club", date: "24/10/26", location: "HOME" },
+            { opponent: "Sunderland Doxy Lad", date: "31/10/26", location: "AWAY" },
+            { opponent: "Linthorpe Academicals", date: "07/11/26", location: "HOME" },
+            { opponent: "Sunderland Myers", date: "14/11/26", location: "AWAY" },
+            { opponent: "Sunderland Wearmouth", date: "21/11/26", location: "AWAY" },
+            { opponent: "Sunderland Velocity Last Orders", date: "28/11/26", location: "HOME" },
+            { opponent: "Sunderland Ivy Legends", date: "05/12/26", location: "AWAY" },
+            { opponent: "Linthorpe Academicals", date: "12/12/26", location: "AWAY" },
+            { opponent: "Sunderland the Philidelphia", date: "19/12/26", location: "HOME" },
+            { opponent: "South Shields Buzzers", date: "09/01/27", location: "AWAY" },
+            { opponent: "Sunderland Myers", date: "16/01/27", location: "HOME" },
+            { opponent: "Sunderland Wearmouth", date: "23/01/27", location: "HOME" },
+            { opponent: "Hazlerigg Victory", date: "30/01/27", location: "HOME" },
+            { opponent: "Sunderland The Philidelphia", date: "06/02/27", location: "AWAY" },
+            { opponent: "Sunderland Velocity Last Orders", date: "13/02/27", location: "AWAY" },
+            { opponent: "Seaton Sluice Juniors", date: "20/02/27", location: "HOME" },
+            { opponent: "Sunderland South Hylton WMC", date: "13/03/27", location: "HOME" },
+            { opponent: "West Allotment Social Club", date: "27/03/27", location: "AWAY" },
+            { opponent: "Seaton Sluice Juniors", date: "03/04/27", location: "AWAY" }
+        ];
+
+        // Display fixtures
+       const fixtureList = document.getElementById("fixtureList");
+fixtures.forEach((match, index) => {
+    const row = document.createElement("tr");
+
+    // Choose colour based on location
+const locationColour = match.location === "HOME" ? "home-cell" : "away-cell";
+
+row.innerHTML = `
+    <td data-label="Match #">${index + 1}</td>
+    <td data-label="Date">${match.date}</td>
+    <td data-label="Opponent">${match.opponent}</td>
+    <td data-label="Location" class="${locationColour}">${match.location}</td>
+    <td data-label="Rate"><button class="rate-button" onclick="rateMatch(${index})">Rate Player</button></td>
+`;
+
+    fixtureList.appendChild(row);
+});
+
+    // Navigation functions
+    function rateMatch(index) {
+        localStorage.setItem("selectedMatch", JSON.stringify(fixtures[index]));
+        window.location.href = "rate.html";
+    }
+
+    function goHome() {
+        window.location.href = "index.html";
+    }
+</script>
+</body>
+</html>
