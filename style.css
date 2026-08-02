@@ -105,15 +105,16 @@ button:hover {
 .keypad button:nth-child(11) { grid-column: 2; } /* 0 */
 .keypad button:nth-child(12) { grid-column: 3; } /* ⏎ */
 
+/* Enter button */
 .keypad button:nth-child(12) {
-    background-color: #FFD700; /* Gold */
-    color: #0B6623;
-    font-size: 1.5rem;
+    background-color: #0B6623; /* ROB green */
+    color: white;
+    font-size: 2rem;
     font-weight: bold;
 }
 
 .keypad button:nth-child(12):hover {
-    background-color: #e6c200;
+    background-color: #084d1a;
 }
 
 /* Make DEL button red */

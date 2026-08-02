@@ -26,8 +26,9 @@ if (localStorage.getItem("loggedIn") !== "true") {
 
 <h2 id="welcomeMessage"></h2>
 
-<div id="userInfo"></div>
+<div id="userInfo" class="user-card"></div>
 
+<div id="dashboardButtons"></div>
 <button onclick="goToMatches()">Matches</button>
 
 <button onclick="goToReports()">Match Reports</button>
@@ -44,6 +45,7 @@ if (localStorage.getItem("loggedIn") !== "true") {
 const name = localStorage.getItem("userName");
 const role = localStorage.getItem("userRole");
 const position = localStorage.getItem("userPosition");
+const team = localStorage.getItem("userTeam");
 
 
 document.getElementById("welcomeMessage").innerHTML =
@@ -52,16 +54,80 @@ document.getElementById("welcomeMessage").innerHTML =
 
 document.getElementById("userInfo").innerHTML =
 `
-<p>Role: ${role}</p>
-<p>Position: ${position}</p>
+<p><strong>Role:</strong> ${role}</p>
+<p><strong>Position:</strong> ${position}</p>
+<p><strong>Team:</strong> ${team}</p>
 `;
 
 
 
-function goToMatches(){
-    window.location.href="matches.html";
+const dashboardButtons = document.getElementById("dashboardButtons");
+
+
+if (role === "player") {
+
+dashboardButtons.innerHTML = `
+
+<button onclick="goToMatches()">Matches</button>
+
+<button onclick="goToReports()">Match Reports</button>
+
+<button onclick="goToTraining()">Training</button>
+
+`;
+
 }
 
+
+
+if (role === "coach") {
+
+dashboardButtons.innerHTML = `
+
+<button onclick="goToMatches()">Fixtures</button>
+
+<button onclick="goToReports()">Match Reports</button>
+
+<button>Team Ratings</button>
+
+<button onclick="goToTraining()">Training</button>
+
+`;
+
+}
+
+
+
+if (role === "admin") {
+
+dashboardButtons.innerHTML = `
+
+<button>Manage Users</button>
+
+<button>Manage Fixtures</button>
+
+<button>Reports</button>
+
+<button>Club Admin</button>
+
+`;
+
+}
+
+
+
+function goToMatches(){
+
+window.location.href="matches.html";
+
+}
+
+
+function goToTraining(){
+
+window.location.href="training.html";
+
+}
 
 </script>
 
