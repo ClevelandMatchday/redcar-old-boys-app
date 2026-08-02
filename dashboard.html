@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ROB Dashboard</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header class="club-header">
+    <img src="robfc_logo.png" alt="ROB FC Logo" class="club-logo">
+    <h1>Redcar Old Boys</h1>
+</header>
+
+
+<div class="container">
+
+<h2 id="welcomeMessage"></h2>
+
+<div id="userInfo"></div>
+
+<button onclick="goToMatches()">Matches</button>
+
+<button onclick="goToReports()">Match Reports</button>
+
+<button onclick="goToTraining()">Training</button>
+
+</div>
+
+
+<script src="app.js"></script>
+
+<script>
+
+const name = localStorage.getItem("userName");
+const role = localStorage.getItem("userRole");
+const position = localStorage.getItem("userPosition");
+
+
+document.getElementById("welcomeMessage").innerHTML =
+`Welcome back, ${name}`;
+
+
+document.getElementById("userInfo").innerHTML =
+`
+<p>Role: ${role}</p>
+<p>Position: ${position}</p>
+`;
+
+
+
+function goToMatches(){
+    window.location.href="matches.html";
+}
+
+
+</script>
+
+</body>
+</html>

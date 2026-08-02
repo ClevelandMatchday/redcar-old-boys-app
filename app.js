@@ -63,9 +63,10 @@ function submitPin() {
                 localStorage.setItem("userRole", user.role);
                 localStorage.setItem("userTeam", user.team);
                 localStorage.setItem("userPosition", user.position);
+                localStorage.setItem("loggedIn", "true");
 
                 // Continue into the app
-                window.location.href = "matches.html";
+                window.location.href = "dashboard.html";
 
             } else {
 
