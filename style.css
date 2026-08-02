@@ -580,23 +580,18 @@ button:hover {
 
 
 .container {
-    width:95%;
+    width:90%;
+    max-width:500px;
     margin:20px auto;
 }
 
-
 button {
-
-    width:85%;
-
+    width:90%;
     max-width:350px;
-
+    min-height:55px;
     font-size:18px;
-
-    padding:15px;
-
+    margin:12px auto;
 }
-
 
 .profile-card {
 
@@ -604,5 +599,48 @@ button {
 
 }
 
+
+}
+
+/* ==============================
+   MOBILE APP OPTIMISATION
+   ============================== */
+
+@media (max-width:768px) {
+
+    body {
+        padding-bottom:20px;
+    }
+
+
+    .club-header {
+        margin-top:15px;
+    }
+
+
+    .club-logo {
+        width:100px;
+    }
+
+
+    .club-header h1 {
+        font-size:22px;
+    }
+
+
+    .container {
+        width:90%;
+        max-width:500px;
+        margin:20px auto;
+    }
+
+
+    button {
+        width:90%;
+        max-width:350px;
+        min-height:55px;
+        margin:12px auto;
+        font-size:18px;
+    }
 
 }
