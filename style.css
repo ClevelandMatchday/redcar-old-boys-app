@@ -484,3 +484,38 @@ button:hover {
         box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
 }
+
+/* PUBLIC HOMEPAGE */
+
+.welcome-box {
+    background-color: white;
+    color: #002366;
+    width: 80%;
+    max-width: 500px;
+    margin: 30px auto;
+    padding: 20px;
+    border-radius: 12px;
+    font-weight: bold;
+}
+
+.welcome-box h2 {
+    margin-top: 0;
+    color: #002366;
+}
+
+.welcome-box p {
+    font-size: 18px;
+    line-height: 1.5;
+}
+
+
+/* Homepage buttons */
+
+.container button {
+    background-color: #FFD700;
+    color: #002366;
+}
+
+.container button:hover {
+    background-color: #e6c200;
+}
