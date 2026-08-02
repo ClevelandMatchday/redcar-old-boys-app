@@ -15,7 +15,6 @@ function goToReports() {
 ---------------------------- */
 
 let enteredPin = "";
-const validPins = ["1234", "5678", "9999"];
 
 function updatePinDisplay() {
     const dots = [
@@ -45,18 +44,43 @@ function deleteNumber() {
 }
 
 function submitPin() {
-    if (validPins.includes(enteredPin)) {
 
-        // Store the logged-in user's PIN
-        localStorage.setItem("currentUser", enteredPin);
-
-        // Go to match list
-        window.location.href = "matches.html";
-
-    } else {
-        alert("Invalid PIN");
-        enteredPin = "";
-        updatePinDisplay();
+    if (enteredPin.length !== 4) {
+        alert("Please enter your 4 digit PIN");
+        return;
     }
+
+    db.ref("users/" + enteredPin).get()
+        .then(snapshot => {
+
+            if (snapshot.exists()) {
+
+                const user = snapshot.val();
+
+                // Save user details for the app to use
+                localStorage.setItem("currentUser", enteredPin);
+                localStorage.setItem("userName", user.name);
+                localStorage.setItem("userRole", user.role);
+                localStorage.setItem("userTeam", user.team);
+                localStorage.setItem("userPosition", user.position);
+
+                // Continue into the app
+                window.location.href = "matches.html";
+
+            } else {
+
+                alert("Invalid PIN");
+                enteredPin = "";
+                updatePinDisplay();
+
+            }
+
+        })
+        .catch(error => {
+
+            console.error("Firebase error:", error);
+            alert("Unable to check PIN");
+
+        });
 }
 
