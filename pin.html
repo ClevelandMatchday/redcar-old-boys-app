@@ -41,6 +41,27 @@
         </div>
     </div>
 
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+    <script>
+
+    const firebaseConfig = {
+    apiKey: "AIzaSyCLLsZUdD9nNHxHU5M9hOWPZkl25e3iq9Y",
+    authDomain: "redcar-ratings.firebaseapp.com",
+    databaseURL: "https://redcar-ratings-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "redcar-ratings",
+    storageBucket: "redcar-ratings.appspot.com",
+    messagingSenderId: "360401254056",
+    appId: "1:360401254056:web:d91fb63e5f95c6e790349d"
+};
+
+    firebase.initializeApp(firebaseConfig);
+
+    const db = firebase.database();
+
+</script>
+
     <script src="app.js"></script>
 </body>
 </html>
