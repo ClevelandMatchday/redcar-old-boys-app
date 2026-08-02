@@ -26,7 +26,7 @@ if (localStorage.getItem("loggedIn") !== "true") {
 
 <h2 id="welcomeMessage"></h2>
 
-<div id="userInfo" class="user-card"></div>
+<div id="userInfo" class="profile-card"></div>
 
 <div id="dashboardButtons"></div>
 
@@ -49,9 +49,24 @@ document.getElementById("welcomeMessage").innerHTML =
 
 document.getElementById("userInfo").innerHTML =
 `
-<p><strong>Role:</strong> ${role}</p>
-<p><strong>Position:</strong> ${position}</p>
-<p><strong>Team:</strong> ${team}</p>
+
+<h3>PLAYER PROFILE</h3>
+
+<p>
+<strong>Name</strong><br>
+${name}
+</p>
+
+<p>
+<strong>Position</strong><br>
+${position}
+</p>
+
+<p>
+<strong>Team</strong><br>
+${team}
+</p>
+
 `;
 
 
