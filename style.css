@@ -1,4 +1,7 @@
-/* GENERAL PAGE STYLING */
+/* ==========================================
+   GENERAL PAGE STYLING
+========================================== */
+
 body {
     background-color:#002366;
     font-family:Arial,sans-serif;
@@ -43,7 +46,10 @@ h2 {
     margin-bottom: 30px;
 }
 
-/* HOMEPAGE BUTTONS */
+/* ==========================================
+   GENERAL BUTTONS
+========================================== */
+
 button {
     display: block;
     width: 200px;
@@ -62,7 +68,10 @@ button:hover {
     background-color: #e6c200;
 }
 
-/* PIN DOTS */
+/* ==========================================
+   PIN SCREEN
+========================================== */
+
 .pin-display {
     margin: 20px auto;
     display: flex;
@@ -142,6 +151,10 @@ button:hover {
     transform: translateY(2px);
 }
 
+/* ==========================================
+   CLUB HEADER
+========================================== */
+
 .club-header {
 
     display:flex;
@@ -177,6 +190,10 @@ button:hover {
 .rate-button:hover {
     background-color: #e6c200;
 }
+
+/* ==========================================
+   FIXTURES
+========================================== */
 
 .fixture-row {
     display: flex;
@@ -237,15 +254,6 @@ button:hover {
 
 .away-cell {
     color: #C00000;           /* Deep red for away */
-    font-weight: bold;
-}
-
-.match-info {
-    background-color: white;
-    padding: 15px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    color: #0B6623;
     font-weight: bold;
 }
 
@@ -328,6 +336,10 @@ button:hover {
     font-weight: bold;
     text-align: center;
 }
+
+/* ==========================================
+   PLAYER RATINGS
+========================================== */
 
 .player-rating-section {
     width: 85%;
@@ -492,7 +504,9 @@ button:hover {
     }
 }
 
-/* PUBLIC HOMEPAGE */
+/* ==========================================
+   PUBLIC HOMEPAGE
+========================================== */
 
 .welcome-box {
     background-color: white;
@@ -526,6 +540,10 @@ button:hover {
 .container button:hover {
     background-color: #e6c200;
 }
+
+/* ==========================================
+   DASHBOARD
+========================================== */
 
 .profile-card {
 
@@ -572,81 +590,48 @@ button:hover {
 
 }
 
-@media (max-width:768px) {
-
-
-.main-title {
-    font-size: 28px;
-}
-
-
-.club-logo {
-    width:100px;
-}
-
-
-.container {
-    width:90%;
-    max-width:500px;
-    margin:20px auto;
-}
-
-button {
-    width:90%;
-    max-width:350px;
-    min-height:55px;
-    font-size:18px;
-    margin:12px auto;
-}
-
-.profile-card {
-
-    width:90%;
-
-}
-
-
-}
-
 /* ==============================
    MOBILE APP OPTIMISATION
-   ============================== */
+============================== */
 
 @media (max-width:768px) {
 
-    body {
+    body{
         padding-bottom:20px;
     }
 
-
-    .club-header {
+    .club-header{
         margin-top:15px;
     }
 
-
-    .club-logo {
+    .club-logo{
         width:100px;
     }
 
-
-    .club-header h1 {
+    .club-header h1{
         font-size:22px;
     }
 
+    .main-title{
+        font-size:28px;
+    }
 
-    .container {
+    .container{
         width:90%;
         max-width:500px;
         margin:20px auto;
     }
 
-
-    button {
+    button{
         width:90%;
         max-width:350px;
         min-height:55px;
         margin:12px auto;
         font-size:18px;
+    }
+
+    .profile-card{
+        width:90%;
     }
 
 }
