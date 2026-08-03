@@ -76,6 +76,13 @@ To be confirmed
 </span>
 </p>
 
+<p>
+🤝 Meet Time:
+<br>
+<span id="meetTime">
+To be confirmed
+</span>
+</p>
 
 <p>
 👕 Kit:
@@ -104,6 +111,19 @@ Back to Fixtures
 
 const match = JSON.parse(localStorage.getItem("selectedMatch"));
 
+console.log(match);
+
+function formatDate(dateString){
+
+    const date = new Date(dateString);
+
+    const day = String(date.getDate()).padStart(2,"0");
+    const month = String(date.getMonth()+1).padStart(2,"0");
+    const year = String(date.getFullYear()).slice(-2);
+
+    return `${day}/${month}/${year}`;
+
+}
 
 if(match){
 
@@ -112,12 +132,24 @@ document.getElementById("opponent").innerHTML =
 match.opponent;
 
 
-document.getElementById("matchDate").innerHTML =
-match.date;
+document.getElementById("matchDate").textContent =
+formatDate(match.date);
 
 
 document.getElementById("location").innerHTML =
 match.location;
+
+
+
+console.log("Ground:", match.ground);
+console.log("Kickoff:", match.kickoff);
+console.log("Meet:", match.meetTime);
+console.log("Kit:", match.kit);
+
+document.getElementById("ground").textContent = match.ground;
+document.getElementById("kickoff").textContent = match.kickoff;
+document.getElementById("meetTime").textContent = match.meetTime;
+document.getElementById("kit").textContent = match.kit;
 
 
 }
@@ -131,7 +163,6 @@ window.location.href="matches.html";
 
 
 </script>
-
 
 </body>
 
