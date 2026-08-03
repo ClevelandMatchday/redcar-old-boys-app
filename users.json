@@ -1,0 +1,22 @@
+{
+  "users": {
+    "1234": {
+      "name": "Test Player",
+      "role": "player",
+      "team": "First Team",
+      "position": "Midfielder"
+    },
+    "5678": {
+      "name": "Test Coach",
+      "role": "coach",
+      "team": "First Team",
+      "position": "Coach"
+    },
+    "9999": {
+      "name": "Test Admin",
+      "role": "admin",
+      "team": "First Team",
+      "position": "Administrator"
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "fixtures": {
+    "1": {
+      "date": "2026-08-08",
+      "opponent": "Prudhoe Youth Club",
+      "location": "Away"
+    },
+    "2": {
+      "date": "2026-08-19",
+      "opponent": "Linthorpe Academicals",
+      "location": "Away"
+    },
+    "3": {
+      "date": "2026-08-23",
+      "opponent": "Redcar Town",
+      "location": "Home"
+    }
+  }
+}
