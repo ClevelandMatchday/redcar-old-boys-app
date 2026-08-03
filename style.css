@@ -635,3 +635,86 @@ button:hover {
     }
 
 }
+
+/* ==========================
+   FIXTURE CARDS
+========================== */
+
+.fixture-cards{
+
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+
+}
+
+.fixture-card{
+
+    background:white;
+    color:#002366;
+
+    border-left:8px solid #0B6623;
+
+    border-radius:12px;
+
+    padding:18px;
+
+    text-align:left;
+
+    box-shadow:0 4px 10px rgba(0,0,0,.18);
+
+    transition:.2s;
+
+}
+
+.fixture-card:hover{
+
+    transform:translateY(-2px);
+
+    cursor:pointer;
+
+}
+
+.fixture-card.away{
+
+    border-left-color:#C00000;
+
+}
+
+.fixture-card h3{
+
+    margin:0 0 12px 0;
+
+    font-size:22px;
+
+}
+
+.fixture-meta{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    margin-top:12px;
+
+    font-weight:bold;
+
+}
+
+.fixture-date{
+
+    color:#555;
+
+}
+
+.fixture-location{
+
+    color:#0B6623;
+
+}
+
+.fixture-card.away .fixture-location{
+
+    color:#C00000;
+
+}

@@ -27,18 +27,7 @@ if (localStorage.getItem("loggedIn") !== "true") {
     <div class="container">
     <h2>2026/27 Fixtures</h2>
 
-    <table class="fixture-table">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Date</th>
-                <th>Opponent</th>
-                <th>Location</th>
-                <th>Rate Player</th>
-            </tr>
-        </thead>
-        <tbody id="fixtureList"></tbody>
-    </table>
+    <div id="fixtureList" class="fixture-cards"></div>
 
     <button class="rate-button" onclick="goHome()">Back to Home</button>
 </div>
@@ -66,68 +55,78 @@ const db = firebase.database();
 
     <script src="app.js"></script>
     <script>
-        // Fixture data
-        const fixtures = [
-            { opponent: "Prudhoe Youth Club", date: "08/08/26", location: "AWAY" },
-            { opponent: "Linthorpe Academicals", date: "19/08/26", location: "AWAY" },
-            { opponent: "Hazlerigg Victory", date: "22/08/26", location: "AWAY" },
-            { opponent: "Billingham The Owington Farm", date: "29/08/26", location: "AWAY" },
-            { opponent: "West Allotment Social Club", date: "05/09/26", location: "HOME" },
-            { opponent: "Sunderland Doxy Lad", date: "12/09/26", location: "HOME" },
-            { opponent: "Sunderland Ivy Legends", date: "19/09/26", location: "HOME" },
-            { opponent: "Sunderland Doxy Lad", date: "26/09/26", location: "HOME" },
-            { opponent: "South Shield Buzzers", date: "03/10/26", location: "HOME" },
-            { opponent: "Sunderland South Hylton", date: "10/10/26", location: "AWAY" },
-            { opponent: "Billingham The Owington Farm", date: "17/10/26", location: "HOME" },
-            { opponent: "Prudhoe Youth Club", date: "24/10/26", location: "HOME" },
-            { opponent: "Sunderland Doxy Lad", date: "31/10/26", location: "AWAY" },
-            { opponent: "Linthorpe Academicals", date: "07/11/26", location: "HOME" },
-            { opponent: "Sunderland Myers", date: "14/11/26", location: "AWAY" },
-            { opponent: "Sunderland Wearmouth", date: "21/11/26", location: "AWAY" },
-            { opponent: "Sunderland Velocity Last Orders", date: "28/11/26", location: "HOME" },
-            { opponent: "Sunderland Ivy Legends", date: "05/12/26", location: "AWAY" },
-            { opponent: "Linthorpe Academicals", date: "12/12/26", location: "AWAY" },
-            { opponent: "Sunderland the Philidelphia", date: "19/12/26", location: "HOME" },
-            { opponent: "South Shields Buzzers", date: "09/01/27", location: "AWAY" },
-            { opponent: "Sunderland Myers", date: "16/01/27", location: "HOME" },
-            { opponent: "Sunderland Wearmouth", date: "23/01/27", location: "HOME" },
-            { opponent: "Hazlerigg Victory", date: "30/01/27", location: "HOME" },
-            { opponent: "Sunderland The Philidelphia", date: "06/02/27", location: "AWAY" },
-            { opponent: "Sunderland Velocity Last Orders", date: "13/02/27", location: "AWAY" },
-            { opponent: "Seaton Sluice Juniors", date: "20/02/27", location: "HOME" },
-            { opponent: "Sunderland South Hylton WMC", date: "13/03/27", location: "HOME" },
-            { opponent: "West Allotment Social Club", date: "27/03/27", location: "AWAY" },
-            { opponent: "Seaton Sluice Juniors", date: "03/04/27", location: "AWAY" }
-        ];
 
-        // Display fixtures
-       const fixtureList = document.getElementById("fixtureList");
-fixtures.forEach((match, index) => {
-    const row = document.createElement("tr");
+        // Fixtures loaded from Firebase
+let fixtures = [];
 
-    // Choose colour based on location
-const locationColour = match.location === "HOME" ? "home-cell" : "away-cell";
+function formatDate(dateString) {
+    const date = new Date(dateString);
 
-row.innerHTML = `
-    <td data-label="Match #">${index + 1}</td>
-    <td data-label="Date">${match.date}</td>
-    <td data-label="Opponent">${match.opponent}</td>
-    <td data-label="Location" class="${locationColour}">${match.location}</td>
-    <td data-label="Rate"><button class="rate-button" onclick="rateMatch(${index})">Rate Player</button></td>
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = String(date.getFullYear()).slice(-2);
+
+    return `${day}/${month}/${year}`;
+}
+
+        const fixtureList = document.getElementById("fixtureList");
+
+db.ref("fixtures").once("value").then((snapshot) => {
+
+    fixtures = [];
+
+    fixtureList.innerHTML = "";
+
+    snapshot.forEach((childSnapshot) => {
+
+        fixtures.push(childSnapshot.val());
+
+    });
+
+    fixtures.forEach((match, index) => {
+
+        const card = document.createElement("div");
+
+card.className =
+    match.location.toUpperCase() === "HOME"
+        ? "fixture-card"
+        : "fixture-card away";
+
+card.innerHTML = `
+
+    <h3>${match.opponent}</h3>
+
+    <div class="fixture-meta">
+
+        <span class="fixture-date">
+            📅 ${formatDate(match.date)}
+        </span>
+
+        <span class="fixture-location">
+            ${match.location.toUpperCase()}
+        </span>
+
+    </div>
+
 `;
 
-    fixtureList.appendChild(row);
+fixtureList.appendChild(card);
+
 });
 
-    // Navigation functions
+        // Navigation functions
     function rateMatch(index) {
         localStorage.setItem("selectedMatch", JSON.stringify(fixtures[index]));
         window.location.href = "rate.html";
     }
 
-    function goHome() {
-        window.location.href = "index.html";
-    }
+});
+
+// Navigation functions
+function goHome() {
+    window.location.href = "index.html";
+}
+
 </script>
 </body>
 </html>
