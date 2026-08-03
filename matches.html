@@ -109,17 +109,24 @@ card.innerHTML = `
     </div>
 
 `;
+    
+
+card.onclick = function(){
+
+localStorage.setItem(
+"selectedMatch",
+JSON.stringify(match)
+);
+
+window.location.href="match-details.html";
+
+}; 
+
 
 fixtureList.appendChild(card);
 
 });
-
-        // Navigation functions
-    function rateMatch(index) {
-        localStorage.setItem("selectedMatch", JSON.stringify(fixtures[index]));
-        window.location.href = "rate.html";
-    }
-
+      
 });
 
 // Navigation functions

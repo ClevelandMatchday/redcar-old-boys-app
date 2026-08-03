@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Match Details</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+<script>
+
+if (localStorage.getItem("loggedIn") !== "true") {
+    window.location.href = "pin.html";
+}
+
+</script>
+
+
+<header class="club-header">
+
+<img src="robfc_logo.png" alt="ROB FC Logo" class="club-logo">
+
+<h1>Match Details</h1>
+
+</header>
+
+
+
+<div class="container">
+
+
+<div class="profile-card">
+
+<h2 id="opponent">
+Loading...
+</h2>
+
+
+<p>
+📅 Date:
+<br>
+<span id="matchDate"></span>
+</p>
+
+
+<p>
+📍 Location:
+<br>
+<span id="location"></span>
+</p>
+
+
+<p>
+🏟 Ground:
+<br>
+<span id="ground">
+To be confirmed
+</span>
+</p>
+
+
+<p>
+⏰ Kick Off:
+<br>
+<span id="kickoff">
+To be confirmed
+</span>
+</p>
+
+
+<p>
+👕 Kit:
+<br>
+<span id="kit">
+To be confirmed
+</span>
+</p>
+
+
+</div>
+
+
+
+<button onclick="goBack()">
+Back to Fixtures
+</button>
+
+
+</div>
+
+
+
+<script>
+
+
+const match = JSON.parse(localStorage.getItem("selectedMatch"));
+
+
+if(match){
+
+
+document.getElementById("opponent").innerHTML =
+match.opponent;
+
+
+document.getElementById("matchDate").innerHTML =
+match.date;
+
+
+document.getElementById("location").innerHTML =
+match.location;
+
+
+}
+
+
+function goBack(){
+
+window.location.href="matches.html";
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>
