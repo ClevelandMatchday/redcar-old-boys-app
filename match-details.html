@@ -67,6 +67,21 @@ To be confirmed
 </span>
 </p>
 
+<div class="map-action">
+
+<button id="mapButton" class="map-button">
+🗺️ Open Map
+</button>
+
+</div>
+
+<p>
+🌱 Pitch Type:
+<br>
+<span id="pitchType">
+To be confirmed
+</span>
+</p>
 
 <p>
 ⏰ Kick Off:
@@ -127,33 +142,52 @@ function formatDate(dateString){
 
 if(match){
 
-
-document.getElementById("opponent").innerHTML =
+document.getElementById("opponent").textContent =
 match.opponent;
 
-
-document.getElementById("matchDate").textContent =
+document.getElementById("matchDate").innerHTML =
 formatDate(match.date);
 
-
-document.getElementById("location").innerHTML =
+document.getElementById("location").textContent =
 match.location;
 
+document.getElementById("ground").textContent =
+match.ground || "To be confirmed";
 
+document.getElementById("pitchType").textContent =
+match.pitchType || "To be confirmed";
 
-console.log("Ground:", match.ground);
-console.log("Kickoff:", match.kickoff);
-console.log("Meet:", match.meetTime);
-console.log("Kit:", match.kit);
+document.getElementById("kickoff").textContent =
+match.kickoff || "To be confirmed";
 
-document.getElementById("ground").textContent = match.ground;
-document.getElementById("kickoff").textContent = match.kickoff;
-document.getElementById("meetTime").textContent = match.meetTime;
-document.getElementById("kit").textContent = match.kit;
+document.getElementById("meetTime").textContent =
+match.meetTime || "To be confirmed";
 
+document.getElementById("kit").textContent =
+match.kit || "To be confirmed";
+
+const mapButton = document.getElementById("mapButton");
+
+if(match.mapLink){
+
+    mapButton.style.display = "inline-block";
+
+    mapButton.onclick = function(){
+
+       console.log(match.mapLink);
+
+       window.open(match.mapLink, "_blank");
+       
+
+    };
+
+}else{
+
+    mapButton.style.display = "none";
 
 }
 
+}
 
 function goBack(){
 

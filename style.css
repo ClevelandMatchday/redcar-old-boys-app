@@ -718,3 +718,39 @@ button:hover {
     color:#C00000;
 
 }
+
+/* Match navigation button */
+
+.map-action {
+    margin: 20px auto;
+    text-align: center;
+}
+
+.map-button {
+
+    width:150px;
+
+    padding:10px 15px;
+
+    background-color:#0B6623 !important;
+
+    color:white !important;
+
+    border-radius:8px;
+
+    border:none;
+
+    font-weight:bold;
+
+    font-size:16px;
+
+    cursor:pointer;
+
+}
+
+
+.map-button:hover {
+
+    background-color:#084d1a !important;
+
+}

@@ -113,14 +113,16 @@ card.innerHTML = `
 
 card.onclick = function(){
 
-localStorage.setItem(
-"selectedMatch",
-JSON.stringify(match)
-);
+    localStorage.removeItem("selectedMatch");
 
-window.location.href="match-details.html";
+    localStorage.setItem(
+        "selectedMatch",
+        JSON.stringify(match)
+    );
 
-}; 
+    window.location.href="match-details.html";
+
+};
 
 
 fixtureList.appendChild(card);
