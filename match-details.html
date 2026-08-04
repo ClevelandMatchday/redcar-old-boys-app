@@ -40,31 +40,34 @@ if (localStorage.getItem("loggedIn") !== "true") {
 
 <div class="profile-card">
 
+    <div class="match-header">
+
     <h2 id="opponent">Loading...</h2>
+
+    <div id="homeAwayBadge" class="away-badge">
+        AWAY
+    </div>
+
+    <div class="match-date" id="matchDate">
+        Saturday 8 August 2026
+    </div>
+
+    <div class="match-kickoff">
+        Kick Off <span id="kickoffTop">10:30</span>
+    </div>
+
+</div>
 
     <div class="section">
 
-        <h3>📅 MATCH INFORMATION</h3>
+<h3>📅 MATCH INFORMATION</h3>
 
-        <div class="info-row">
-            <span class="label">Date</span>
-            <span id="matchDate"></span>
-        </div>
+<div class="info-row">
+    <span class="label">Meet Time</span>
+    <span id="meetTime"></span>
+</div>
 
-        <div class="info-row">
-            <span class="label">Kick Off</span>
-            <span id="kickoff"></span>
-        </div>
-
-        <div class="info-row">
-            <span class="label">Meet Time</span>
-            <span id="meetTime"></span>
-        </div>
-
-        <div class="info-row">
-            <span class="label">Location</span>
-            <span id="location"></span>
-        </div>
+</div>
 
     </div>
 
@@ -111,7 +114,9 @@ if (localStorage.getItem("loggedIn") !== "true") {
 
         <h3>⭐ PLAYER RATINGS</h3>
 
-        <button id="rateButton"></button>
+        <button id="rateButton">
+    Loading...
+</button>
 
     </div>
 
@@ -151,14 +156,16 @@ function formatDate(dateString){
 
     const date = new Date(dateString);
 
-    const day = String(date.getDate()).padStart(2,"0");
-    const month = String(date.getMonth()+1).padStart(2,"0");
-    const year = String(date.getFullYear()).slice(-2);
+    const options = {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+    };
 
-    return `${day}/${month}/${year}`;
+    return date.toLocaleDateString("en-GB", options);
 
 }
-
 if(match){
 
 const kickoffDateTime = new Date(
@@ -192,6 +199,16 @@ else {
 
 }
 
+rateButton.onclick = function(){
+
+    if(!rateButton.disabled){
+
+        goToRatings();
+
+    }
+
+};
+
 console.log("Kick Off:", kickoffDateTime);
 
 console.log("Closing:", closingDateTime);
@@ -204,14 +221,28 @@ match.opponent;
 document.getElementById("matchDate").innerHTML =
 formatDate(match.date);
 
+document.getElementById("kickoffTop").textContent =
+match.kickoff;
+
 document.getElementById("location").textContent =
 match.location;
+
+const badge = document.getElementById("homeAwayBadge");
+
+badge.textContent = match.location.toUpperCase();
+
+badge.className =
+    match.location.toUpperCase() === "HOME"
+        ? "home-badge"
+        : "away-badge";
 
 document.getElementById("ground").textContent =
 match.ground || "To be confirmed";
 
 document.getElementById("pitchType").textContent =
-match.pitchType || "To be confirmed";
+match.pitchType
+? match.pitchType.charAt(0).toUpperCase() + match.pitchType.slice(1) + " Pitch"
+: "To be confirmed";
 
 document.getElementById("kickoff").textContent =
 match.kickoff || "To be confirmed";
@@ -220,8 +251,9 @@ document.getElementById("meetTime").textContent =
 match.meetTime || "To be confirmed";
 
 document.getElementById("kit").textContent =
-match.kit || "To be confirmed";
-
+match.kit
+? match.kit + " Kit"
+: "To be confirmed";
 const mapButton = document.getElementById("mapButton");
 
 if(match.mapLink){
