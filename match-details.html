@@ -112,6 +112,10 @@ To be confirmed
 
 
 
+<button id="rateButton" class="rate-button" onclick="goToRatings()">
+⭐ Rate Players
+</button>
+
 <button onclick="goBack()">
 Back to Fixtures
 </button>
@@ -186,6 +190,17 @@ if(match.mapLink){
     mapButton.style.display = "none";
 
 }
+
+}
+
+function goToRatings(){
+
+    localStorage.setItem(
+        "selectedMatch",
+        JSON.stringify(match)
+    );
+
+    window.location.href = "rate.html";
 
 }
 
