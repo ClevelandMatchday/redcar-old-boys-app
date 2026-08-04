@@ -40,76 +40,93 @@ if (localStorage.getItem("loggedIn") !== "true") {
 
 <div class="profile-card">
 
-<h2 id="opponent">
-Loading...
-</h2>
+    <h2 id="opponent">Loading...</h2>
+
+    <div class="section">
+
+        <h3>📅 MATCH INFORMATION</h3>
+
+        <div class="info-row">
+            <span class="label">Date</span>
+            <span id="matchDate"></span>
+        </div>
+
+        <div class="info-row">
+            <span class="label">Kick Off</span>
+            <span id="kickoff"></span>
+        </div>
+
+        <div class="info-row">
+            <span class="label">Meet Time</span>
+            <span id="meetTime"></span>
+        </div>
+
+        <div class="info-row">
+            <span class="label">Location</span>
+            <span id="location"></span>
+        </div>
+
+    </div>
 
 
-<p>
-📅 Date:
-<br>
-<span id="matchDate"></span>
-</p>
+    <div class="section">
+
+        <h3>📍 VENUE</h3>
+
+        <p id="ground"></p>
+
+        <div class="info-row">
+            <span class="label">Pitch</span>
+            <span id="pitchType"></span>
+        </div>
+
+        <button id="mapButton" class="map-button">
+            🗺 Open in Google Maps
+        </button>
+
+    </div>
 
 
-<p>
-📍 Location:
-<br>
-<span id="location"></span>
-</p>
+    <div class="section">
+
+        <h3>👕 PLAYING KIT</h3>
+
+        <p id="kit"></p>
+
+    </div>
 
 
-<p>
-🏟 Ground:
-<br>
-<span id="ground">
-To be confirmed
-</span>
-</p>
+    <div class="section">
 
-<div class="map-action">
+        <h3>🙋 AVAILABILITY</h3>
 
-<button id="mapButton" class="map-button">
-🗺️ Open Map
-</button>
+        <p style="color:#777;">
+            Coming Soon
+        </p>
+
+    </div>
+
+
+    <div class="section">
+
+        <h3>⭐ PLAYER RATINGS</h3>
+
+        <button id="rateButton"></button>
+
+    </div>
+
+
+    <div class="section">
+
+        <h3>📰 MATCH REPORT</h3>
+
+        <p style="color:#777;">
+            Available after Full Time
+        </p>
+
+    </div>
 
 </div>
-
-<p>
-🌱 Pitch Type:
-<br>
-<span id="pitchType">
-To be confirmed
-</span>
-</p>
-
-<p>
-⏰ Kick Off:
-<br>
-<span id="kickoff">
-To be confirmed
-</span>
-</p>
-
-<p>
-🤝 Meet Time:
-<br>
-<span id="meetTime">
-To be confirmed
-</span>
-</p>
-
-<p>
-👕 Kit:
-<br>
-<span id="kit">
-To be confirmed
-</span>
-</p>
-
-
-</div>
-
 
 
 <button id="rateButton" class="rate-button" onclick="goToRatings()">
