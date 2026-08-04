@@ -130,6 +130,8 @@ Back to Fixtures
 
 const match = JSON.parse(localStorage.getItem("selectedMatch"));
 
+const rateButton = document.getElementById("rateButton");
+
 console.log(match);
 
 function formatDate(dateString){
@@ -145,6 +147,43 @@ function formatDate(dateString){
 }
 
 if(match){
+
+const kickoffDateTime = new Date(
+    `${match.date}T${match.kickoff}:00`
+);
+
+const closingDateTime = new Date(kickoffDateTime);
+
+closingDateTime.setHours(
+    closingDateTime.getHours() + 48
+);
+
+const now = new Date();
+
+if (now < kickoffDateTime) {
+
+    rateButton.textContent = "🔒 Ratings Available After Match";
+    rateButton.disabled = true;
+
+}
+else if (now <= closingDateTime) {
+
+    rateButton.textContent = "⭐ Rate Players";
+    rateButton.disabled = false;
+
+}
+else {
+
+    rateButton.textContent = "⛔ Ratings Closed";
+    rateButton.disabled = true;
+
+}
+
+console.log("Kick Off:", kickoffDateTime);
+
+console.log("Closing:", closingDateTime);
+
+console.log("Now:", now);
 
 document.getElementById("opponent").textContent =
 match.opponent;
