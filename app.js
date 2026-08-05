@@ -96,8 +96,8 @@ function submitPin() {
 
 
             localStorage.setItem(
-                "userTeam",
-                foundPlayer.squad
+                "userPosition",
+                foundPlayer.position
             );
 
 
