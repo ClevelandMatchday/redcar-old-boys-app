@@ -40,46 +40,53 @@ if (localStorage.getItem("loggedIn") !== "true") {
 
 <div class="profile-card">
 
+    <!-- MATCH HEADER -->
     <div class="match-header">
 
-    <h2 id="opponent">Loading...</h2>
+        <h2 id="opponent">Loading...</h2>
 
-    <div id="homeAwayBadge" class="away-badge">
-        AWAY
+        <div id="homeAwayBadge" class="away-badge">
+            AWAY
+        </div>
+
+        <div class="match-date" id="matchDate"></div>
+
+        <div class="match-kickoff">
+            Kick Off <strong id="kickoffTop"></strong>
+        </div>
+
     </div>
 
-    <div class="match-date" id="matchDate">
-        Saturday 8 August 2026
-    </div>
 
-    <div class="match-kickoff">
-        Kick Off <span id="kickoffTop">10:30</span>
-    </div>
-
-</div>
+    <!-- MATCH INFORMATION -->
 
     <div class="section">
 
-<h3>📅 MATCH INFORMATION</h3>
-
-<div class="info-row">
-    <span class="label">Meet Time</span>
-    <span id="meetTime"></span>
-</div>
-
-</div>
-
-    </div>
-
-
-    <div class="section">
-
-        <h3>📍 VENUE</h3>
-
-        <p id="ground"></p>
+        <h3>📅 MATCH INFORMATION</h3>
 
         <div class="info-row">
-            <span class="label">Pitch</span>
+            <span>🤝 Meet Time</span>
+            <span id="meetTime"></span>
+        </div>
+
+        <div class="info-row">
+            <span>📍 Location</span>
+            <span id="location"></span>
+        </div>
+
+    </div>
+
+
+    <!-- VENUE -->
+
+    <div class="section">
+
+        <h3>🏟 VENUE</h3>
+
+        <p class="ground-name" id="ground"></p>
+
+        <div class="info-row">
+            <span>🌱 Surface</span>
             <span id="pitchType"></span>
         </div>
 
@@ -90,6 +97,8 @@ if (localStorage.getItem("loggedIn") !== "true") {
     </div>
 
 
+    <!-- PLAYING KIT -->
+
     <div class="section">
 
         <h3>👕 PLAYING KIT</h3>
@@ -99,40 +108,43 @@ if (localStorage.getItem("loggedIn") !== "true") {
     </div>
 
 
+    <!-- AVAILABILITY -->
+
     <div class="section">
 
         <h3>🙋 AVAILABILITY</h3>
 
-        <p style="color:#777;">
-            Coming Soon
+        <p class="coming-soon">
+            Opens 7 days before kick off
         </p>
 
     </div>
 
+
+    <!-- PLAYER RATINGS -->
 
     <div class="section">
 
         <h3>⭐ PLAYER RATINGS</h3>
 
-        <button id="rateButton">
-    Loading...
-</button>
+        <button id="rateButton"></button>
 
     </div>
 
+
+    <!-- MATCH REPORT -->
 
     <div class="section">
 
         <h3>📰 MATCH REPORT</h3>
 
-        <p style="color:#777;">
-            Available after Full Time
+        <p class="coming-soon">
+            Published after Full Time
         </p>
 
     </div>
 
 </div>
-
 
 <button onclick="goBack()">
 Back to Fixtures
