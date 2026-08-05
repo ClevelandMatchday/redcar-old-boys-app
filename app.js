@@ -50,38 +50,92 @@ function submitPin() {
         return;
     }
 
-    db.ref("users/" + enteredPin).get()
-        .then(snapshot => {
 
-            if (snapshot.exists()) {
+    db.ref("players").get()
 
-                const user = snapshot.val();
+    .then(snapshot => {
 
-                // Save user details for the app to use
-                localStorage.setItem("currentUser", enteredPin);
-                localStorage.setItem("userName", user.name);
-                localStorage.setItem("userRole", user.role);
-                localStorage.setItem("userTeam", user.team);
-                localStorage.setItem("userPosition", user.position);
-                localStorage.setItem("loggedIn", "true");
+        let foundPlayer = null;
+        let playerID = null;
 
-                // Continue into the app
-                window.location.href = "dashboard.html";
 
-            } else {
+        snapshot.forEach(childSnapshot => {
 
-                alert("Invalid PIN");
-                enteredPin = "";
-                updatePinDisplay();
+            const player = childSnapshot.val();
+
+
+            if(player.pin === enteredPin){
+
+                foundPlayer = player;
+                playerID = childSnapshot.key;
 
             }
 
-        })
-        .catch(error => {
-
-            console.error("Firebase error:", error);
-            alert("Unable to check PIN");
-
         });
-}
 
+
+        if(foundPlayer){
+
+
+            localStorage.setItem(
+                "currentPlayer",
+                playerID
+            );
+
+
+            localStorage.setItem(
+                "userName",
+                foundPlayer.displayName
+            );
+
+
+            localStorage.setItem(
+                "userRole",
+                foundPlayer.role
+            );
+
+
+            localStorage.setItem(
+                "userTeam",
+                foundPlayer.squad
+            );
+
+
+            localStorage.setItem(
+                "loggedIn",
+                "true"
+            );
+
+
+            window.location.href = "dashboard.html";
+
+
+        } else {
+
+
+            alert("Invalid PIN");
+
+            enteredPin = "";
+
+            updatePinDisplay();
+
+
+        }
+
+
+    })
+
+    .catch(error => {
+
+        console.error(
+            "Firebase error:",
+            error
+        );
+
+        alert(
+            "Unable to check PIN"
+        );
+
+    });
+
+}
