@@ -845,3 +845,17 @@ button:hover {
     color:#777;
     font-weight:600;
 }
+
+.logout-button{
+
+    background:#C00000;
+    color:white;
+    font-weight:bold;
+    border:none;
+    padding:14px 30px;
+    border-radius:10px;
+    font-size:18px;
+    margin-top:20px;
+    cursor:pointer;
+
+}
