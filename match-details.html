@@ -41,41 +41,36 @@ if (localStorage.getItem("loggedIn") !== "true") {
 <div class="profile-card">
 
     <!-- MATCH HEADER -->
-    <div class="match-header">
 
-        <h2 id="opponent">Loading...</h2>
-
-        <div id="homeAwayBadge" class="away-badge">
-            AWAY
-        </div>
-
-        <div class="match-date" id="matchDate"></div>
-
-        <div class="match-kickoff">
-            Kick Off <strong id="kickoffTop"></strong>
-        </div>
-
-    </div>
-
-
-    <!-- MATCH INFORMATION -->
+    <h2 id="opponent" class="fixture-title">
+        Loading...
+    </h2>
 
     <div class="section">
 
         <h3>📅 MATCH INFORMATION</h3>
+
+        <p class="fixture-date-large" id="matchDate">
+            Saturday, 8 August 2026
+        </p>
+
+        <div class="info-row">
+            <span>⏰ Kick Off</span>
+            <span id="kickoffTop"></span>
+        </div>
 
         <div class="info-row">
             <span>🤝 Meet Time</span>
             <span id="meetTime"></span>
         </div>
 
-        <div class="info-row">
-            <span>📍 Location</span>
-            <span id="location"></span>
+        <div class="badge-container">
+            <div id="homeAwayBadge" class="away-badge">
+                AWAY
+            </div>
         </div>
 
     </div>
-
 
     <!-- VENUE -->
 
@@ -96,17 +91,15 @@ if (localStorage.getItem("loggedIn") !== "true") {
 
     </div>
 
-
     <!-- PLAYING KIT -->
 
     <div class="section">
 
         <h3>👕 PLAYING KIT</h3>
 
-        <p id="kit"></p>
+        <p id="kit" class="centre-text"></p>
 
     </div>
-
 
     <!-- AVAILABILITY -->
 
@@ -120,7 +113,6 @@ if (localStorage.getItem("loggedIn") !== "true") {
 
     </div>
 
-
     <!-- PLAYER RATINGS -->
 
     <div class="section">
@@ -130,7 +122,6 @@ if (localStorage.getItem("loggedIn") !== "true") {
         <button id="rateButton"></button>
 
     </div>
-
 
     <!-- MATCH REPORT -->
 
@@ -143,6 +134,8 @@ if (localStorage.getItem("loggedIn") !== "true") {
         </p>
 
     </div>
+
+</div>
 
 </div>
 
@@ -161,6 +154,8 @@ Back to Fixtures
 const match = JSON.parse(localStorage.getItem("selectedMatch"));
 
 const rateButton = document.getElementById("rateButton");
+
+console.log("Rate button:", rateButton);
 
 console.log(match);
 
@@ -192,6 +187,75 @@ closingDateTime.setHours(
 
 const now = new Date();
 
+// Match title
+document.getElementById("opponent").textContent =
+    match.opponent;
+
+// Date
+document.getElementById("matchDate").textContent =
+    formatDate(match.date);
+
+// Kick Off
+document.getElementById("kickoffTop").textContent =
+    match.kickoff || "TBC";
+
+// Meet Time
+document.getElementById("meetTime").textContent =
+    match.meetTime || "TBC";
+
+// Home / Away badge
+const badge = document.getElementById("homeAwayBadge");
+
+badge.textContent = match.location.toUpperCase();
+
+badge.className =
+    match.location.toUpperCase() === "HOME"
+        ? "home-badge"
+        : "away-badge";
+
+// Ground
+document.getElementById("ground").textContent =
+    match.ground || "To be confirmed";
+
+// Pitch
+document.getElementById("pitchType").textContent =
+    match.pitchType
+        ? match.pitchType.charAt(0).toUpperCase() +
+          match.pitchType.slice(1) +
+          " Pitch"
+        : "To be confirmed";
+
+// Kit
+document.getElementById("kit").textContent =
+    match.kit
+        ? match.kit + " Kit"
+        : "To be confirmed";
+
+const mapButton = document.getElementById("mapButton");
+
+if(match.mapLink){
+
+    mapButton.style.display = "inline-block";
+
+    mapButton.onclick = function(){
+
+       console.log(match.mapLink);
+
+       window.open(match.mapLink, "_blank");
+
+    };
+
+}else{
+
+    mapButton.style.display = "none";
+
+}
+
+
+// PLAYER RATINGS BUTTON
+
+console.log("Ratings code reached");
+
 if (now < kickoffDateTime) {
 
     rateButton.textContent = "🔒 Ratings Available After Match";
@@ -221,73 +285,7 @@ rateButton.onclick = function(){
 
 };
 
-console.log("Kick Off:", kickoffDateTime);
-
-console.log("Closing:", closingDateTime);
-
-console.log("Now:", now);
-
-document.getElementById("opponent").textContent =
-match.opponent;
-
-document.getElementById("matchDate").innerHTML =
-formatDate(match.date);
-
-document.getElementById("kickoffTop").textContent =
-match.kickoff;
-
-document.getElementById("location").textContent =
-match.location;
-
-const badge = document.getElementById("homeAwayBadge");
-
-badge.textContent = match.location.toUpperCase();
-
-badge.className =
-    match.location.toUpperCase() === "HOME"
-        ? "home-badge"
-        : "away-badge";
-
-document.getElementById("ground").textContent =
-match.ground || "To be confirmed";
-
-document.getElementById("pitchType").textContent =
-match.pitchType
-? match.pitchType.charAt(0).toUpperCase() + match.pitchType.slice(1) + " Pitch"
-: "To be confirmed";
-
-document.getElementById("kickoff").textContent =
-match.kickoff || "To be confirmed";
-
-document.getElementById("meetTime").textContent =
-match.meetTime || "To be confirmed";
-
-document.getElementById("kit").textContent =
-match.kit
-? match.kit + " Kit"
-: "To be confirmed";
-const mapButton = document.getElementById("mapButton");
-
-if(match.mapLink){
-
-    mapButton.style.display = "inline-block";
-
-    mapButton.onclick = function(){
-
-       console.log(match.mapLink);
-
-       window.open(match.mapLink, "_blank");
-       
-
-    };
-
-}else{
-
-    mapButton.style.display = "none";
-
-}
-
-}
+}   // <-- Move the closing brace HERE
 
 function goToRatings(){
 
@@ -302,10 +300,9 @@ function goToRatings(){
 
 function goBack(){
 
-window.location.href="matches.html";
+    window.location.href = "matches.html";
 
 }
-
 
 </script>
 
