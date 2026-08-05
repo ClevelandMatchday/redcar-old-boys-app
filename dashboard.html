@@ -42,7 +42,7 @@ if (localStorage.getItem("loggedIn") !== "true") {
 const name = localStorage.getItem("userName");
 const role = localStorage.getItem("userRole");
 const position = localStorage.getItem("userPosition");
-const team = localStorage.getItem("userTeam");
+const playerPosition = localStorage.getItem("userPosition");
 
 
 document.getElementById("welcomeMessage").innerHTML =
@@ -61,12 +61,12 @@ ${name}
 
 <p>
 <strong>Position</strong><br>
-${position}
+${playerPosition}
 </p>
 
 <p>
-<strong>Team</strong><br>
-${team}
+<strong>Access</strong><br>
+${role}
 </p>
 
 `;
@@ -76,43 +76,51 @@ ${team}
 const dashboardButtons = document.getElementById("dashboardButtons");
 
 
-if (role === "player") {
-
-dashboardButtons.innerHTML = `
-
-<button onclick="goToMatches()">Matches</button>
-
-<button onclick="goToReports()">Match Reports</button>
-
-<button onclick="goToTraining()">Training</button>
-
-`;
-
-}
-
-
-
-if (role === "coach") {
-
-dashboardButtons.innerHTML = `
+// PLAYER FUNCTIONS
+let buttons = `
 
 <button onclick="goToMatches()">Fixtures</button>
 
 <button onclick="goToReports()">Match Reports</button>
 
-<button>Team Ratings</button>
-
 <button onclick="goToTraining()">Training</button>
+
+`;
+
+
+// MANAGER FUNCTIONS
+
+if(role === "manager" || role === "admin"){
+
+buttons += `
+
+<button>Team Management</button>
+
+<button>Availability</button>
 
 `;
 
 }
 
 
+// ADMIN FUNCTIONS
 
-if (role === "admin") {
+if(role === "admin"){
 
-dashboardButtons.innerHTML = `
+buttons += `
+
+<button>Manage Players</button>
+
+<button>Manage Fixtures</button>
+
+<button>Club Admin</button>
+
+`;
+
+}
+
+
+dashboardButtons.innerHTML = buttons;
 
 <button>Manage Users</button>
 
