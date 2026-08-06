@@ -859,3 +859,39 @@ button:hover {
     cursor:pointer;
 
 }
+
+/* ==========================
+   AVAILABILITY PAGE
+========================== */
+
+.availability-option{
+
+display:block;
+
+padding:14px 0;
+
+font-size:20px;
+
+font-weight:600;
+
+cursor:pointer;
+
+}
+
+.availability-option input{
+
+margin-right:12px;
+
+transform:scale(1.3);
+
+}
+
+#lastUpdated{
+
+text-align:center;
+
+font-weight:600;
+
+color:#666;
+
+}
