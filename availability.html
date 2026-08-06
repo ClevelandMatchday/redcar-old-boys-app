@@ -282,16 +282,27 @@ document.getElementById("saveButton").onclick = function(){
     .then(() => {
 
 
-        document.getElementById(
-            "lastUpdated"
-        ).textContent =
-        response.updated;
+    const savedDate = new Date(response.updated);
 
 
-        alert("Availability saved");
+    document.getElementById("updatedDate").textContent =
+        "✅ Response Saved";
 
 
-    })
+    document.getElementById("updatedTime").textContent =
+        savedDate.toLocaleString("en-GB", {
+
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit"
+
+        });
+
+
+})
 
     .catch(error => {
 
