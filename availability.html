@@ -178,21 +178,6 @@ function formatDate(dateString){
 
 }
 
-function formatDate(dateString){
-
-    const date = new Date(dateString);
-
-    return date.toLocaleDateString("en-GB",{
-
-        weekday:"long",
-        day:"numeric",
-        month:"long",
-        year:"numeric"
-
-    });
-
-}
-
 if(match){
 
     document.getElementById("matchDate").textContent =
@@ -258,7 +243,9 @@ db.ref(
 
 // SAVE AVAILABILITY RESPONSE
 
-document.getElementById("saveAvailability").onclick = function(){
+document.getElementById("saveButton").onclick = function(){
+
+    console.log("Save button clicked");
 
     const selected =
         document.querySelector(
