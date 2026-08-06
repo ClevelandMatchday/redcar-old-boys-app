@@ -164,13 +164,11 @@ const db = firebase.database();
 
 
 // ===============================
-// CURRENT PLAYER & MATCH
+// CURRENT MATCH
 // ===============================
 
 const match = JSON.parse(localStorage.getItem("selectedMatch"));
-const playerID = localStorage.getItem("currentPlayer");
 
-console.log("Current Player:", playerID);
 console.log("Selected Match:", match);
 
 
@@ -210,41 +208,6 @@ function formatDateTime(dateString){
 
 }
 
-// ===============================
-// STATUS DISPLAY
-// ===============================
-
-function getStatus(status){
-
-    switch(status){
-
-        case "available":
-            return {
-                text: "🟢 Available",
-                colour: "#1E9E48"
-            };
-
-        case "late":
-            return {
-                text: "🟡 Late",
-                colour: "#D08A00"
-            };
-
-        case "unavailable":
-            return {
-                text: "🔴 Unavailable",
-                colour: "#C62828"
-            };
-
-        default:
-            return {
-                text: "No response submitted",
-                colour: "#666666"
-            };
-
-    }
-
-}
 
 // ===============================
 // LOAD FIXTURE DETAILS
@@ -341,132 +304,55 @@ Promise.all([
         unavailable;
 
     document.getElementById("noResponseCount").textContent =
-        noResponse;
+    noResponse;
 
-})
-
-.catch(error=>{
-
-    console.error(error);
-
-});
 
 // ===============================
-// LOAD EXISTING AVAILABILITY
+// RESPONSE PERCENTAGE
 // ===============================
 
-db.ref(
-    "fixtures/" +
-    match.fixtureID +
-    "/availability/" +
-    playerID
-)
+const totalPlayers =
+    available +
+    late +
+    unavailable +
+    noResponse;
 
-.get()
 
-.then(snapshot => {
+const responded =
+    available +
+    late +
+    unavailable;
 
-    if(!snapshot.exists()) return;
 
-    const availability = snapshot.val();
+let percentage = 0;
 
-    console.log("Existing availability:", availability);
+if(totalPlayers > 0){
 
-    if(document.getElementById(availability.status)){
-
-        document.getElementById(
-            availability.status
-        ).checked = true;
-
-    }
-
-    if(availability.updated){
-
-        
-const status = getStatus(availability.status);
-
-document.getElementById("responseStatus").textContent =
-    status.text;
-
-document.getElementById("responseStatus").style.color =
-    status.colour;
-
-    document.getElementById("updatedTime").textContent =
-        formatDateTime(availability.updated);
+    percentage =
+        Math.round(
+            (responded / totalPlayers) * 100
+        );
 
 }
 
+
+document.getElementById(
+    "responseProgress"
+).style.width =
+    percentage + "%";
+
+
+document.getElementById(
+    "responsePercentage"
+).textContent =
+    percentage + "% responded";
+
+
 })
 
 .catch(error=>{
 
     console.error(error);
-
-});
-
-
-// ===============================
-// SAVE AVAILABILITY
-// ===============================
-
-document.getElementById("saveButton").addEventListener("click",function(){
-
-    const selected =
-        document.querySelector(
-            'input[name="availability"]:checked'
-        );
-
-    if(!selected){
-
-        alert("Please select your availability.");
-
-        return;
-
-    }
-
-    const response = {
-
-        status: selected.value,
-
-        updated: new Date().toISOString()
-
-    };
-
-    db.ref(
-        "fixtures/" +
-        match.fixtureID +
-        "/availability/" +
-        playerID
-    )
-
-    .set(response)
-
-    .then(()=>{
-
-        console.log("Availability Saved");
-
-       const status = getStatus(response.status);
-
-document.getElementById("responseStatus").textContent =
-    status.text;
-
-document.getElementById("responseStatus").style.color =
-    status.colour;
-
-document.getElementById("updatedTime").textContent =
-    formatDateTime(response.updated);
-
-        alert("Availability saved successfully.");
-
-    })
-
-    .catch(error=>{
-
-        console.error(error);
-
-        alert("Unable to save availability.");
-
-    });
 
 });
 
