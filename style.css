@@ -1307,3 +1307,147 @@ color:#002366;
     border-color:#999;
 
 }
+
+.squad-player-card{
+
+    border-radius:14px;
+
+    padding:16px;
+
+    margin-bottom:14px;
+
+    cursor:pointer;
+
+    transition:0.25s;
+
+    border:2px solid #ddd;
+
+}
+
+.squad-player-card:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:0 4px 12px rgba(0,0,0,.15);
+
+}
+
+.squad-player-card.available{
+
+    border-color:#2db84d;
+
+    background:#f5fff7;
+
+}
+
+.squad-player-card.late{
+
+    border-color:#e5a300;
+
+    background:#fffaf0;
+
+}
+
+.squad-player-card.unavailable{
+
+    border-color:#d63b3b;
+
+    background:#fff5f5;
+
+    opacity:.65;
+
+}
+
+.player-card-content{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:15px;
+
+}
+
+.player-info{
+
+    flex:1;
+
+}
+
+.availability-label{
+
+    font-weight:bold;
+
+    color:#002366;
+
+}
+
+.player-select-row {
+
+    border:2px solid #1E9E48;
+    background:#f4fff6;
+    border-radius:15px;
+
+    padding:15px;
+
+    margin-bottom:15px;
+
+}
+
+
+.player-select-label {
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    cursor:pointer;
+
+}
+
+
+.player-select-label input {
+
+    width:18px;
+
+    height:18px;
+
+}
+
+
+.player-details {
+
+    flex:1;
+
+    margin-left:15px;
+
+}
+
+
+.player-name {
+
+    font-size:18px;
+
+    font-weight:bold;
+
+}
+
+
+.player-position {
+
+    font-size:15px;
+
+}
+
+
+.player-status {
+
+    font-weight:bold;
+
+    color:#1E9E48;
+
+}

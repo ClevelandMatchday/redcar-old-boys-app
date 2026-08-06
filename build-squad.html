@@ -195,6 +195,7 @@ if(match){
 // ===============================
 
 let selectedPlayers = [];
+let savedSquad = {};
 
 console.log("Loading available players...");
 
@@ -206,11 +207,17 @@ Promise.all([
         "fixtures/" +
         match.fixtureID +
         "/availability"
+    ).get(),
+
+    db.ref(
+        "fixtures/" +
+        match.fixtureID +
+        "/squad"
     ).get()
 
 ])
 
-.then(([playersSnap, availabilitySnap]) => {
+.then(([playersSnap, availabilitySnap, squadSnap]) => {
 
 console.log("Players found:", playersSnap.numChildren());
 
@@ -219,6 +226,10 @@ console.log("Availability records:", availabilitySnap.val());
         document.getElementById("availablePlayers");
 
     container.innerHTML = "";
+
+savedSquad = squadSnap.val() || {};
+
+console.log("Saved squad:", savedSquad);
 
     playersSnap.forEach(player => {
 
@@ -239,40 +250,47 @@ row.className = "squad-player-card " + response.status;
 
 row.innerHTML = `
 
-<div class="player-card-content">
+<label class="player-select-label">
 
     <input
-        type="checkbox"
-        value="${player.key}"
-        onchange="togglePlayer(this)">
+    type="checkbox"
+    value="${player.key}"
+    ${savedSquad[player.key] ? "checked" : ""}
+    onchange="togglePlayer(this)">
 
-    <div class="player-info">
+    <div class="player-details">
 
         <div class="player-name">
-
             ${data.name}
-
         </div>
 
         <div class="player-position">
-
             ${data.position}
-
         </div>
 
     </div>
 
-    <div class="availability-label">
 
-        ${response.status.toUpperCase()}
-
+    <div class="player-status available">
+        🟢 Available
     </div>
 
-</div>
+
+</label>
 
 `;
 
+const checkbox = row.querySelector("input");
+
+if (response.status === "unavailable") {
+    checkbox.disabled = true;
+}
                container.appendChild(row);
+if(savedSquad[player.key]){
+
+    selectedPlayers.push(player.key);
+
+}
 
     });
 
@@ -281,6 +299,92 @@ row.innerHTML = `
 .catch(error => {
 
     console.error(error);
+
+});
+
+// ===============================
+// SAVE SQUAD
+// ===============================
+
+document.getElementById("saveSquad")
+.addEventListener("click", function(){
+
+    console.log("Save clicked");
+    console.log("Selected players:", selectedPlayers);
+
+
+    if(selectedPlayers.length === 0){
+
+        alert("Please select at least one player.");
+
+        return;
+
+    }
+
+
+    const squadData = {};
+
+
+    selectedPlayers.forEach(playerID => {
+
+        squadData[playerID] = {
+
+            selected:true,
+
+            selectedAt:new Date().toISOString()
+
+        };
+
+    });
+
+
+
+    db.ref(
+        "fixtures/" +
+        match.fixtureID +
+        "/squad"
+    )
+
+    .set(squadData)
+
+
+    .then(()=>{
+
+
+        alert(
+            "Squad saved successfully."
+        );
+
+
+        console.log(
+            "Saved squad:",
+            squadData
+        );
+
+document.getElementById(
+    "selectedCount"
+).textContent =
+selectedPlayers.length + " Players Selected";
+
+    })
+
+
+    .catch(error=>{
+
+
+        console.error(
+            "Saving squad failed:",
+            error
+        );
+
+
+        alert(
+            "Unable to save squad."
+        );
+
+
+    });
+
 
 });
 
