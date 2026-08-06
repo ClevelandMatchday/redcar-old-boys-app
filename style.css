@@ -935,3 +935,34 @@ font-size:16px;
 color:#888;
 
 }
+
+.response-status{
+
+    font-size:28px;
+    font-weight:700;
+    text-align:center;
+    margin-top:10px;
+    margin-bottom:18px;
+
+}
+
+.response-label{
+
+    text-align:center;
+    font-size:15px;
+    font-weight:600;
+    color:#777;
+    text-transform:uppercase;
+    letter-spacing:1px;
+
+}
+
+.response-time{
+
+    text-align:center;
+    font-size:18px;
+    font-weight:600;
+    color:#666;
+    margin-top:6px;
+
+}
