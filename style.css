@@ -1192,3 +1192,107 @@ color:#002366;
     margin-top:10px;
 
 }
+
+/* ===============================
+   PLAYER RESPONSE CARDS
+=============================== */
+
+.player-response-card{
+
+    border:2px solid #ddd;
+
+    border-radius:12px;
+
+    padding:15px;
+
+    margin:12px auto;
+
+    max-width:300px;
+
+    text-align:center;
+
+    background:#fff;
+
+}
+
+
+/* PLAYER NAME */
+
+.player-name{
+
+    font-size:18px;
+
+    font-weight:700;
+
+    color:#002366;
+
+    margin-bottom:5px;
+
+}
+
+
+/* POSITION */
+
+.player-position{
+
+    font-size:16px;
+
+    font-weight:600;
+
+    margin-bottom:8px;
+
+}
+
+
+/* STATUS */
+
+.player-status{
+
+    font-size:18px;
+
+    font-weight:700;
+
+    margin-bottom:8px;
+
+}
+
+
+/* UPDATED TIME */
+
+.player-updated{
+
+    font-size:14px;
+
+    color:#666;
+
+}
+
+
+/* RESPONSE COLOURS */
+
+.player-response-card.available{
+
+    border-color:#1E9E48;
+
+}
+
+
+.player-response-card.late{
+
+    border-color:#D08A00;
+
+}
+
+
+.player-response-card.unavailable{
+
+    border-color:#C62828;
+
+}
+
+
+.player-response-card.noresponse{
+
+    border-color:#999;
+
+}
