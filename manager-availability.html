@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Availability</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<header class="club-header">
+    <img src="robfc_logo.png" alt="ROB FC Logo" class="club-logo">
+    <h1>Redcar Old Boys</h1>
+</header>
+
+<div class="container">
+
+<div class="profile-card">
+
+<div class="section">
+
+<h2 style="text-align:center;color:#002366;">
+📋 Team Availability
+</h2>
+
+<h2 id="opponent" class="match-opponent"></h2>
+
+<div
+class="match-date"
+id="matchDate">
+</div>
+
+<div class="match-kickoff">
+Kick Off
+<strong id="kickoff"></strong>
+</div>
+
+<div class="match-kickoff">
+Meet Time
+<strong id="meetTime"></strong>
+</div>
+
+<div
+id="homeAwayBadge"
+class="away-badge"
+style="margin-top:20px;">
+</div>
+
+<div class="section">
+
+<h3>TEAM SUMMARY</h3>
+
+<div class="summary-grid">
+
+<div class="summary-card available">
+    <div class="summary-number" id="availableCount">0</div>
+    <div class="summary-label">Available</div>
+</div>
+
+<div class="summary-card late">
+    <div class="summary-number" id="lateCount">0</div>
+    <div class="summary-label">Late</div>
+</div>
+
+<div class="summary-card unavailable">
+    <div class="summary-number" id="unavailableCount">0</div>
+    <div class="summary-label">Unavailable</div>
+</div>
+
+<div class="summary-card noresponse">
+    <div class="summary-number" id="noResponseCount">0</div>
+    <div class="summary-label">No Response</div>
+</div>
+
+</div>
+
+</div>
+
+<div class="section">
+
+<h3>PLAYER RESPONSES</h3>
+
+<div id="playerResponses">
+
+<p style="text-align:center;color:#666;">
+Loading squad...
+</p>
+
+</div>
+
+<button
+class="menu-button"
+onclick="goBack()">
+
+Back to Match
+
+</button>
+
+</div>
+
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+<script>
+
+// ===============================
+// FIREBASE
+// ===============================
+
+const firebaseConfig = {
+    apiKey: "AIzaSyCLLsZUdD9nNHxHU5M9hOWPZkl25e3iq9Y",
+    authDomain: "redcar-ratings.firebaseapp.com",
+    databaseURL: "https://redcar-ratings-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "redcar-ratings",
+    storageBucket: "redcar-ratings.appspot.com",
+    messagingSenderId: "360401254056",
+    appId: "1:360401254056:web:d91fb63e5f95c6e790349d"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const db = firebase.database();
+
+
+// ===============================
+// CURRENT PLAYER & MATCH
+// ===============================
+
+const match = JSON.parse(localStorage.getItem("selectedMatch"));
+const playerID = localStorage.getItem("currentPlayer");
+
+console.log("Current Player:", playerID);
+console.log("Selected Match:", match);
+
+
+// ===============================
+// DATE FORMATTERS
+// ===============================
+
+function formatDate(dateString){
+
+    const date = new Date(dateString);
+
+    return date.toLocaleDateString("en-GB",{
+
+        weekday:"long",
+        day:"numeric",
+        month:"long",
+        year:"numeric"
+
+    });
+
+}
+
+function formatDateTime(dateString){
+
+    const date = new Date(dateString);
+
+    return date.toLocaleString("en-GB",{
+
+        weekday:"long",
+        day:"numeric",
+        month:"long",
+        year:"numeric",
+        hour:"2-digit",
+        minute:"2-digit"
+
+    });
+
+}
+
+// ===============================
+// STATUS DISPLAY
+// ===============================
+
+function getStatus(status){
+
+    switch(status){
+
+        case "available":
+            return {
+                text: "🟢 Available",
+                colour: "#1E9E48"
+            };
+
+        case "late":
+            return {
+                text: "🟡 Late",
+                colour: "#D08A00"
+            };
+
+        case "unavailable":
+            return {
+                text: "🔴 Unavailable",
+                colour: "#C62828"
+            };
+
+        default:
+            return {
+                text: "No response submitted",
+                colour: "#666666"
+            };
+
+    }
+
+}
+
+// ===============================
+// LOAD FIXTURE DETAILS
+// ===============================
+
+if(match){
+
+    document.getElementById("opponent").textContent =
+        match.opponent;
+
+    document.getElementById("matchDate").textContent =
+        formatDate(match.date);
+
+    document.getElementById("kickoff").textContent =
+        match.kickoff;
+
+    document.getElementById("meetTime").textContent =
+        match.meetTime || "TBC";
+
+    const badge =
+        document.getElementById("homeAwayBadge");
+
+    badge.textContent =
+        match.location.toUpperCase();
+
+    badge.className =
+        match.location.toUpperCase() === "HOME"
+        ? "home-badge"
+        : "away-badge";
+
+}
+
+
+// ===============================
+// LOAD EXISTING AVAILABILITY
+// ===============================
+
+db.ref(
+    "fixtures/" +
+    match.fixtureID +
+    "/availability/" +
+    playerID
+)
+
+.get()
+
+.then(snapshot => {
+
+    if(!snapshot.exists()) return;
+
+    const availability = snapshot.val();
+
+    console.log("Existing availability:", availability);
+
+    if(document.getElementById(availability.status)){
+
+        document.getElementById(
+            availability.status
+        ).checked = true;
+
+    }
+
+    if(availability.updated){
+
+        
+const status = getStatus(availability.status);
+
+document.getElementById("responseStatus").textContent =
+    status.text;
+
+document.getElementById("responseStatus").style.color =
+    status.colour;
+
+    document.getElementById("updatedTime").textContent =
+        formatDateTime(availability.updated);
+
+}
+
+})
+
+.catch(error=>{
+
+    console.error(error);
+
+});
+
+
+// ===============================
+// SAVE AVAILABILITY
+// ===============================
+
+document.getElementById("saveButton").addEventListener("click",function(){
+
+    const selected =
+        document.querySelector(
+            'input[name="availability"]:checked'
+        );
+
+    if(!selected){
+
+        alert("Please select your availability.");
+
+        return;
+
+    }
+
+    const response = {
+
+        status: selected.value,
+
+        updated: new Date().toISOString()
+
+    };
+
+    db.ref(
+        "fixtures/" +
+        match.fixtureID +
+        "/availability/" +
+        playerID
+    )
+
+    .set(response)
+
+    .then(()=>{
+
+        console.log("Availability Saved");
+
+       const status = getStatus(response.status);
+
+document.getElementById("responseStatus").textContent =
+    status.text;
+
+document.getElementById("responseStatus").style.color =
+    status.colour;
+
+document.getElementById("updatedTime").textContent =
+    formatDateTime(response.updated);
+
+        alert("Availability saved successfully.");
+
+    })
+
+    .catch(error=>{
+
+        console.error(error);
+
+        alert("Unable to save availability.");
+
+    });
+
+});
+
+
+// ===============================
+// BACK BUTTON
+// ===============================
+
+function goBack(){
+
+    window.location.href="match-details.html";
+
+}
+</script>
+
+</body>
+
+</html>
