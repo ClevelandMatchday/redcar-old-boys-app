@@ -84,15 +84,43 @@ style="margin-top:20px;">
 
 <div class="section">
 
-<h3>PLAYER RESPONSES</h3>
+<h3>RESPONSE STATUS</h3>
 
-<div id="playerResponses">
+<div class="response-progress">
 
-<p style="text-align:center;color:#666;">
-Loading squad...
+<div class="progress-bar">
+
+<div id="responseProgress"></div>
+
+</div>
+
+<p id="responseText">
+Calculating responses...
 </p>
 
 </div>
+
+</div>
+
+<h3>MANAGER TOOLS</h3>
+
+<button
+class="menu-button"
+onclick="window.location.href='player-responses.html'">
+
+👥 View Player Responses
+
+</button>
+
+<button
+class="menu-button"
+disabled>
+
+⚽ Build Match Squad
+<br>
+<small>(Coming Soon)</small>
+
+</button>
 
 <button
 class="menu-button"
