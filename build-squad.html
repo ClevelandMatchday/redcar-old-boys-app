@@ -98,7 +98,7 @@ id="teamSheetButton"
 style="display:none;"
 onclick="goToTeamSheet()">
 
-⚽ Create Team Sheet
+⚽ Continue to Team Sheet
 
 </button>
 
@@ -242,6 +242,15 @@ console.log("Availability records:", availabilitySnap.val());
 savedSquad = squadSnap.val() || {};
 
 console.log("Saved squad:", savedSquad);
+
+// Show Team Sheet button if squad already exists
+
+if(Object.keys(savedSquad).length > 0){
+
+    document.getElementById("teamSheetButton")
+    .style.display = "block";
+
+}
 
     playersSnap.forEach(player => {
 
