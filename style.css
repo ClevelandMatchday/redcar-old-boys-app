@@ -867,9 +867,10 @@ button:hover {
 .availability-option{
 
 display:flex;
+
 align-items:center;
 
-padding:12px 0;
+padding:12px;
 
 font-size:20px;
 
@@ -878,7 +879,22 @@ font-weight:600;
 cursor:pointer;
 
 max-width:220px;
-margin:0 auto;
+
+margin:8px auto;
+
+border:2px solid transparent;
+
+border-radius:12px;
+
+transition:0.2s;
+
+}
+
+.availability-option:hover{
+
+border-color:#FFD700;
+
+background:#fffbea;
 
 }
 
