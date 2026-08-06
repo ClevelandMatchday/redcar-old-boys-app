@@ -90,6 +90,8 @@ let buttons = `
 
 <button onclick="goToTraining()">Training</button>
 
+<button onclick="goToAvailability()">Availability</button>
+
 `;
 
 
@@ -142,6 +144,11 @@ window.location.href="training.html";
 
 }
 
+function goToAvailability(){
+
+window.location.href="availability.html";
+
+}
 function logout(){
 
     localStorage.removeItem("loggedIn");

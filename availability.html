@@ -12,63 +12,137 @@
 
 </head>
 
-
 <body>
 
-
 <header class="club-header">
-
-<img src="robfc_logo.png" class="club-logo">
-
-<h1>Availability</h1>
-
+    <img src="robfc_logo.png" alt="ROB FC Logo" class="club-logo">
+    <h1>Redcar Old Boys</h1>
 </header>
-
-
 
 <div class="container">
 
-
 <div class="profile-card">
 
+<div class="section">
 
-<h2 id="fixtureTitle">
-Loading Fixture...
+<h2 style="text-align:center;color:#002366;">
+🙋 Match Availability
 </h2>
 
+<div class="match-date" id="matchDate"></div>
 
-<div id="availabilityButtons">
+<div class="match-kickoff">
+Kick Off <strong id="kickoff"></strong>
+</div>
+
+<div id="homeAwayBadge"
+class="away-badge"
+style="margin-top:20px;">
+AWAY
+</div>
+
+</div>
 
 
-<button onclick="setAvailability('available')">
-✅ Available
+<div class="section">
+
+<h3>YOUR AVAILABILITY</h3>
+
+<label class="availability-option">
+
+<input
+type="radio"
+name="availability"
+value="available">
+
+🟢 Available
+
+</label>
+
+<label class="availability-option">
+
+<input
+type="radio"
+name="availability"
+value="late">
+
+🟡 Late
+
+</label>
+
+<label class="availability-option">
+
+<input
+type="radio"
+name="availability"
+value="unavailable">
+
+🔴 Unavailable
+
+</label>
+
+</div>
+
+
+<div class="section">
+
+<h3>LAST UPDATED</h3>
+
+<p id="lastUpdated">
+
+Never
+
+</p>
+
+</div>
+
+
+<button
+class="menu-button"
+id="saveButton">
+
+Save Availability
+
 </button>
 
+<button
+class="menu-button"
+onclick="goBack()">
 
-<button onclick="setAvailability('unavailable')">
-❌ Unavailable
+Back to Match
+
 </button>
 
-
 </div>
 
-
 </div>
-
-
-</div>
-
-
 
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
+<script>
 
-<script src="firebase.js"></script>
+const firebaseConfig = {
+apiKey: "AIzaSyCLLsZUdD9nNHxHU5M9hOWPZkl25e3iq9Y",
+authDomain: "redcar-ratings.firebaseapp.com",
+databaseURL: "https://redcar-ratings-default-rtdb.europe-west1.firebasedatabase.app",
+projectId: "redcar-ratings",
+storageBucket: "redcar-ratings.appspot.com",
+messagingSenderId: "360401254056",
+appId: "1:360401254056:web:d91fb63e5f95c6e790349d"
+};
 
-<script src="availability.js"></script>
+firebase.initializeApp(firebaseConfig);
 
+const db = firebase.database();
+
+function goBack(){
+
+window.location.href="match-details.html";
+
+}
+
+</script>
 
 </body>
 
