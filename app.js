@@ -64,12 +64,12 @@ function submitPin() {
             const player = childSnapshot.val();
 
 
-            if(player.pin === enteredPin){
+            if(player.pin.toString() === enteredPin){
 
-                foundPlayer = player;
-                playerID = childSnapshot.key;
+    foundPlayer = player;
+    playerID = childSnapshot.key;
 
-            }
+}
 
         });
 

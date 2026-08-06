@@ -88,7 +88,289 @@ Back to Team Availability
 </div>
 
 
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
 <script>
+
+// ===============================
+// FIREBASE
+// ===============================
+
+const firebaseConfig = {
+    apiKey: "AIzaSyCLLsZUdD9nNHxHU5M9hOWPZkl25e3iq9Y",
+    authDomain: "redcar-ratings.firebaseapp.com",
+    databaseURL: "https://redcar-ratings-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "redcar-ratings",
+    storageBucket: "redcar-ratings.appspot.com",
+    messagingSenderId: "360401254056",
+    appId: "1:360401254056:web:d91fb63e5f95c6e790349d"
+};
+
+
+firebase.initializeApp(firebaseConfig);
+
+const db = firebase.database();
+
+
+// ===============================
+// CURRENT MATCH
+// ===============================
+
+const match = JSON.parse(
+    localStorage.getItem("selectedMatch")
+);
+
+
+// ===============================
+// DATE FORMAT
+// ===============================
+
+function formatDate(dateString){
+
+    const date = new Date(dateString);
+
+    return date.toLocaleDateString("en-GB",{
+
+        weekday:"long",
+        day:"numeric",
+        month:"long",
+        year:"numeric"
+
+    });
+
+}
+
+
+function formatDateTime(dateString){
+
+    const date = new Date(dateString);
+
+    return date.toLocaleString("en-GB",{
+
+        weekday:"long",
+        day:"numeric",
+        month:"long",
+        year:"numeric",
+        hour:"2-digit",
+        minute:"2-digit"
+
+    });
+
+}
+
+
+// ===============================
+// LOAD FIXTURE DETAILS
+// ===============================
+
+if(match){
+
+    document.getElementById("opponent").textContent =
+        match.opponent;
+
+
+    document.getElementById("matchDate").textContent =
+        formatDate(match.date);
+
+
+    document.getElementById("kickoff").textContent =
+        match.kickoff;
+
+
+    document.getElementById("meetTime").textContent =
+        match.meetTime || "TBC";
+
+
+    const badge =
+        document.getElementById("homeAwayBadge");
+
+
+    badge.textContent =
+        match.location.toUpperCase();
+
+
+    badge.className =
+        match.location.toUpperCase() === "HOME"
+        ? "home-badge"
+        : "away-badge";
+
+}
+
+
+// ===============================
+// LOAD PLAYER RESPONSES
+// ===============================
+
+Promise.all([
+
+    db.ref("players").get(),
+
+    db.ref(
+        "fixtures/" +
+        match.fixtureID +
+        "/availability"
+    ).get()
+
+])
+
+
+.then(([playersSnap, availabilitySnap]) => {
+
+
+    const container =
+        document.getElementById("playerList");
+
+
+    container.innerHTML = "";
+
+
+    playersSnap.forEach(player => {
+
+
+        const data = player.val();
+
+
+        if(data.active !== true){
+
+            return;
+
+        }
+
+
+        const response =
+            availabilitySnap.child(player.key).val();
+
+
+        let statusText =
+            "⚪ No Response";
+
+
+        let statusClass =
+            "noresponse";
+
+
+        let updated =
+            "";
+
+
+        if(response){
+
+
+            updated =
+                formatDateTime(response.updated);
+
+
+
+            switch(response.status){
+
+
+                case "available":
+
+                    statusText =
+                        "🟢 Available";
+
+                    statusClass =
+                        "available";
+
+                    break;
+
+
+                case "late":
+
+                    statusText =
+                        "🟡 Late";
+
+                    statusClass =
+                        "late";
+
+                    break;
+
+
+                case "unavailable":
+
+                    statusText =
+                        "🔴 Unavailable";
+
+                    statusClass =
+                        "unavailable";
+
+                    break;
+
+            }
+
+        }
+
+
+        const card = document.createElement("div");
+
+
+        card.className =
+            "player-response-card " + statusClass;
+
+
+        card.innerHTML = `
+
+            <div class="player-name">
+
+                👤 ${data.name}
+
+            </div>
+
+
+            <div class="player-position">
+
+                ${data.position || ""}
+
+            </div>
+
+
+            <div class="player-status">
+
+                ${statusText}
+
+            </div>
+
+
+            <div class="player-updated">
+
+                ${updated}
+
+            </div>
+
+        `;
+
+
+        container.appendChild(card);
+
+
+    });
+
+
+})
+
+
+.catch(error => {
+
+    console.error(
+        "Loading responses failed:",
+        error
+    );
+
+});
+
+
+// ===============================
+// BACK BUTTON
+// ===============================
+
+function goBack(){
+
+    window.location.href =
+        "manager-availability.html";
+
+}
+
 
 </script>
 
