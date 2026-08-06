@@ -220,6 +220,107 @@ if(match){
 
 }
 
+// LOAD EXISTING AVAILABILITY
+
+db.ref(
+    "fixtures/" +
+    match.fixtureID +
+    "/availability/" +
+    playerID
+)
+.get()
+
+.then(snapshot => {
+
+    if(snapshot.exists()){
+
+        const availability = snapshot.val();
+
+        console.log(
+            "Existing availability:",
+            availability
+        );
+
+
+        document.getElementById(
+            availability.status
+        ).checked = true;
+
+
+        document.getElementById(
+            "updatedDate"
+        ).textContent =
+        availability.updated;
+
+    }
+
+});
+
+// SAVE AVAILABILITY RESPONSE
+
+document.getElementById("saveAvailability").onclick = function(){
+
+    const selected =
+        document.querySelector(
+            'input[name="availability"]:checked'
+        );
+
+
+    if(!selected){
+
+        alert("Please select your availability");
+
+        return;
+
+    }
+
+
+    const response = {
+
+        status: selected.value,
+
+        updated: new Date().toISOString()
+
+    };
+
+
+    db.ref(
+        "fixtures/" +
+        match.fixtureID +
+        "/availability/" +
+        playerID
+    )
+    .set(response)
+
+    .then(() => {
+
+
+        document.getElementById(
+            "lastUpdated"
+        ).textContent =
+        response.updated;
+
+
+        alert("Availability saved");
+
+
+    })
+
+    .catch(error => {
+
+        console.error(
+            "Save error:",
+            error
+        );
+
+        alert(
+            "Unable to save availability"
+        );
+
+    });
+
+};
+
 function goBack(){
 
 window.location.href="match-details.html";
