@@ -26,23 +26,31 @@
 <div class="section">
 
 <h2 style="text-align:center;color:#002366;">
-🙋 Match Availability
+🙋 Availability
 </h2>
 
-<div class="match-date" id="matchDate"></div>
+<h2 id="opponent" class="match-opponent"></h2>
+
+<div
+class="match-date"
+id="matchDate">
+</div>
 
 <div class="match-kickoff">
-Kick Off <strong id="kickoff"></strong>
+Kick Off
+<strong id="kickoff"></strong>
 </div>
 
-<div id="homeAwayBadge"
+<div class="match-kickoff">
+Meet Time
+<strong id="meetTime"></strong>
+</div>
+
+<div
+id="homeAwayBadge"
 class="away-badge"
 style="margin-top:20px;">
-AWAY
 </div>
-
-</div>
-
 
 <div class="section">
 
@@ -135,6 +143,52 @@ appId: "1:360401254056:web:d91fb63e5f95c6e790349d"
 firebase.initializeApp(firebaseConfig);
 
 const db = firebase.database();
+
+const match = JSON.parse(
+    localStorage.getItem("selectedMatch")
+);
+
+function formatDate(dateString){
+
+    const date = new Date(dateString);
+
+    return date.toLocaleDateString("en-GB",{
+
+        weekday:"long",
+        day:"numeric",
+        month:"long",
+        year:"numeric"
+
+    });
+
+}
+
+if(match){
+
+    document.getElementById("matchDate").textContent =
+        formatDate(match.date);
+
+    document.getElementById("kickoff").textContent =
+        match.kickoff;
+
+    document.getElementById("opponent").textContent =
+    match.opponent;
+
+    document.getElementById("meetTime").textContent =
+    match.meetTime || "TBC";
+
+    const badge =
+        document.getElementById("homeAwayBadge");
+
+    badge.textContent =
+        match.location.toUpperCase();
+
+    badge.className =
+        match.location.toUpperCase() === "HOME"
+            ? "home-badge"
+            : "away-badge";
+
+}
 
 function goBack(){
 
