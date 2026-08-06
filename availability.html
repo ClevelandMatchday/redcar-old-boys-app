@@ -210,6 +210,41 @@ function formatDateTime(dateString){
 
 }
 
+// ===============================
+// STATUS DISPLAY
+// ===============================
+
+function getStatus(status){
+
+    switch(status){
+
+        case "available":
+            return {
+                text: "🟢 Available",
+                colour: "#1E9E48"
+            };
+
+        case "late":
+            return {
+                text: "🟡 Late",
+                colour: "#D08A00"
+            };
+
+        case "unavailable":
+            return {
+                text: "🔴 Unavailable",
+                colour: "#C62828"
+            };
+
+        default:
+            return {
+                text: "No response submitted",
+                colour: "#666666"
+            };
+
+    }
+
+}
 
 // ===============================
 // LOAD FIXTURE DETAILS
@@ -274,26 +309,14 @@ db.ref(
 
     if(availability.updated){
 
-        let statusText = "";
+        
+const status = getStatus(availability.status);
 
-switch(availability.status){
+document.getElementById("responseStatus").textContent =
+    status.text;
 
-    case "available":
-        statusText = "🟢 Available";
-        break;
-
-    case "late":
-        statusText = "🟡 Late";
-        break;
-
-    case "unavailable":
-        statusText = "🔴 Unavailable";
-        break;
-
-}
-
-    document.getElementById("responseStatus").textContent =
-        statusText;
+document.getElementById("responseStatus").style.color =
+    status.colour;
 
     document.getElementById("updatedTime").textContent =
         formatDateTime(availability.updated);
@@ -349,29 +372,16 @@ document.getElementById("saveButton").addEventListener("click",function(){
 
         console.log("Availability Saved");
 
-        let statusText = "";
-
-switch(response.status){
-
-    case "available":
-        statusText = "🟢 Available";
-        break;
-
-    case "late":
-        statusText = "🟡 Late";
-        break;
-
-    case "unavailable":
-        statusText = "🔴 Unavailable";
-        break;
-
-}
+       const status = getStatus(response.status);
 
 document.getElementById("responseStatus").textContent =
-    statusText;
+    status.text;
 
-        document.getElementById("updatedTime").textContent =
-            formatDateTime(response.updated);
+document.getElementById("responseStatus").style.color =
+    status.colour;
+
+document.getElementById("updatedTime").textContent =
+    formatDateTime(response.updated);
 
         alert("Availability saved successfully.");
 
