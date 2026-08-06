@@ -285,14 +285,22 @@ const checkbox = row.querySelector("input");
 if (response.status === "unavailable") {
     checkbox.disabled = true;
 }
-               container.appendChild(row);
+
 if(savedSquad[player.key]){
 
     selectedPlayers.push(player.key);
 
 }
 
+               container.appendChild(row);
+
+
     });
+
+document.getElementById(
+    "selectedCount"
+).textContent =
+selectedPlayers.length + " Players Selected";
 
 })
 
@@ -351,9 +359,27 @@ document.getElementById("saveSquad")
     .then(()=>{
 
 
-        alert(
-            "Squad saved successfully."
-        );
+        alert("Squad saved successfully");
+
+document.getElementById("teamSheetButton")
+.style.display = "block";
+
+<button
+class="menu-button"
+id="teamSheetButton"
+style="display:none;"
+onclick="goToTeamSheet()">
+
+⚽ Create Team Sheet
+
+</button>
+
+function goToTeamSheet(){
+
+window.location.href="team-sheet.html";
+
+}
+
 
 
         console.log(
@@ -361,10 +387,6 @@ document.getElementById("saveSquad")
             squadData
         );
 
-document.getElementById(
-    "selectedCount"
-).textContent =
-selectedPlayers.length + " Players Selected";
 
     })
 
