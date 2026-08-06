@@ -866,7 +866,8 @@ button:hover {
 
 .availability-option{
 
-display:block;
+display:flex;
+align-items:center;
 
 padding:14px 0;
 
