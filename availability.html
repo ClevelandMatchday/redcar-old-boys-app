@@ -61,7 +61,8 @@ style="margin-top:20px;">
 <input
 type="radio"
 name="availability"
-value="available">
+value="available"
+id="available">
 
 <span class="availability-label">
 🟢 Available
@@ -74,7 +75,8 @@ value="available">
 <input
 type="radio"
 name="availability"
-value="late">
+value="late"
+id="late">
 
 <span class="availability-label">
 🟡 Late
@@ -87,7 +89,8 @@ value="late">
 <input
 type="radio"
 name="availability"
-value="unavailable">
+value="unavailable"
+id="unavailable">
 
 <span class="availability-label">
 🔴 Unavailable
@@ -154,6 +157,26 @@ const db = firebase.database();
 const match = JSON.parse(
     localStorage.getItem("selectedMatch")
 );
+
+// Logged in player
+const playerID = localStorage.getItem("currentPlayer");
+
+console.log("Current Player:", playerID);
+
+function formatDate(dateString){
+
+    const date = new Date(dateString);
+
+    return date.toLocaleDateString("en-GB",{
+
+        weekday:"long",
+        day:"numeric",
+        month:"long",
+        year:"numeric"
+
+    });
+
+}
 
 function formatDate(dateString){
 

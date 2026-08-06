@@ -79,7 +79,11 @@ db.ref("fixtures").once("value").then((snapshot) => {
 
     snapshot.forEach((childSnapshot) => {
 
-        fixtures.push(childSnapshot.val());
+        const fixture = childSnapshot.val();
+
+        fixture.fixtureID = childSnapshot.key;
+
+        fixtures.push(fixture);
 
     });
 

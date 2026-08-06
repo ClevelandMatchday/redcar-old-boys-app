@@ -869,13 +869,22 @@ button:hover {
 display:flex;
 align-items:center;
 
-padding:14px 0;
+padding:12px 0;
 
 font-size:20px;
 
 font-weight:600;
 
 cursor:pointer;
+
+max-width:220px;
+margin:0 auto;
+
+}
+
+.availability-label{
+
+margin-left:12px;
 
 }
 
@@ -891,8 +900,22 @@ transform:scale(1.3);
 
 text-align:center;
 
+color:#666;
+
+}
+
+#updatedDate{
+
 font-weight:600;
 
-color:#666;
+margin-bottom:4px;
+
+}
+
+#updatedTime{
+
+font-size:16px;
+
+color:#888;
 
 }
