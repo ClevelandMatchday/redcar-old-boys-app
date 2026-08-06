@@ -54,7 +54,7 @@ style="margin-top:20px;">
 
 <div class="section">
 
-<h3>YOUR AVAILABILITY</h3>
+<h3>AVAILABILITY</h3>
 
 <label class="availability-option">
 
@@ -63,7 +63,9 @@ type="radio"
 name="availability"
 value="available">
 
+<span class="availability-label">
 🟢 Available
+</span>
 
 </label>
 
@@ -74,7 +76,9 @@ type="radio"
 name="availability"
 value="late">
 
+<span class="availability-label">
 🟡 Late
+</span>
 
 </label>
 
@@ -85,7 +89,9 @@ type="radio"
 name="availability"
 value="unavailable">
 
+<span class="availability-label">
 🔴 Unavailable
+</span>
 
 </label>
 
@@ -96,20 +102,21 @@ value="unavailable">
 
 <h3>LAST UPDATED</h3>
 
-<p id="lastUpdated">
+<div id="lastUpdated">
 
+<div id="updatedDate">
 Never
-
-</p>
-
 </div>
 
+<div id="updatedTime"></div>
+
+</div>
 
 <button
 class="menu-button"
 id="saveButton">
 
-Save Availability
+Save Response
 
 </button>
 
