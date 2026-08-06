@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Build Match Squad</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+<header class="club-header">
+    <img src="robfc_logo.png" alt="ROB FC Logo" class="club-logo">
+    <h1>Redcar Old Boys</h1>
+</header>
+
+<div class="container">
+
+    <div class="profile-card">
+
+        <div class="section">
+
+            <h2 style="text-align:center;color:#002366;">
+                ⚽ Build Match Squad
+            </h2>
+
+            <h2 id="opponent" class="match-opponent"></h2>
+
+            <div class="match-date" id="matchDate"></div>
+
+            <div class="match-kickoff">
+                Kick Off
+                <strong id="kickoff"></strong>
+            </div>
+
+            <div class="match-kickoff">
+                Meet Time
+                <strong id="meetTime"></strong>
+            </div>
+
+            <div
+                id="homeAwayBadge"
+                class="away-badge"
+                style="margin-top:20px;">
+            </div>
+
+        </div>
+
+        <div class="section">
+
+            <h3>SQUAD STATUS</h3>
+
+            <div id="selectedCount" class="squad-counter">
+
+                0 Players Selected
+
+            </div>
+
+        </div>
+
+        <div class="section">
+
+            <h3>AVAILABLE PLAYERS</h3>
+
+            <div id="availablePlayers">
+
+                <p style="text-align:center;color:#666;">
+
+                    Loading available players...
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="section">
+
+            <button
+                class="menu-button"
+                id="saveSquad">
+
+                💾 Save Squad
+
+            </button>
+
+            <button
+                class="menu-button"
+                onclick="goBack()">
+
+                Back to Team Availability
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+<script>
+
+
+// ===============================
+// FIREBASE
+// ===============================
+
+const firebaseConfig = {
+    apiKey: "AIzaSyCLLsZUdD9nNHxHU5M9hOWPZkl25e3iq9Y",
+    authDomain: "redcar-ratings.firebaseapp.com",
+    databaseURL: "https://redcar-ratings-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "redcar-ratings",
+    storageBucket: "redcar-ratings.appspot.com",
+    messagingSenderId: "360401254056",
+    appId: "1:360401254056:web:d91fb63e5f95c6e790349d"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const db = firebase.database();
+
+
+// ===============================
+// CURRENT MATCH
+// ===============================
+
+const match =
+JSON.parse(localStorage.getItem("selectedMatch"));
+
+console.log("Selected Match:", match);
+console.log("Fixture ID:", match.fixtureID);
+
+// ===============================
+// DATE FORMAT
+// ===============================
+
+function formatDate(dateString){
+
+    const date = new Date(dateString);
+
+    return date.toLocaleDateString("en-GB",{
+
+        weekday:"long",
+        day:"numeric",
+        month:"long",
+        year:"numeric"
+
+    });
+
+}
+
+// ===============================
+// LOAD MATCH DETAILS
+// ===============================
+
+if(match){
+
+    document.getElementById("opponent").textContent =
+        match.opponent;
+
+    document.getElementById("matchDate").textContent =
+        formatDate(match.date);
+
+    document.getElementById("kickoff").textContent =
+        match.kickoff;
+
+    document.getElementById("meetTime").textContent =
+        match.meetTime || "TBC";
+
+    const badge =
+        document.getElementById("homeAwayBadge");
+
+    badge.textContent =
+        match.location.toUpperCase();
+
+    badge.className =
+        match.location.toUpperCase() === "HOME"
+        ? "home-badge"
+        : "away-badge";
+
+}
+
+// ===============================
+// LOAD AVAILABLE PLAYERS
+// ===============================
+
+let selectedPlayers = [];
+
+console.log("Loading available players...");
+
+Promise.all([
+
+    db.ref("players").get(),
+
+    db.ref(
+        "fixtures/" +
+        match.fixtureID +
+        "/availability"
+    ).get()
+
+])
+
+.then(([playersSnap, availabilitySnap]) => {
+
+console.log("Players found:", playersSnap.numChildren());
+
+console.log("Availability records:", availabilitySnap.val());
+    const container =
+        document.getElementById("availablePlayers");
+
+    container.innerHTML = "";
+
+    playersSnap.forEach(player => {
+
+        const data = player.val();
+
+        if(data.active !== true) return;
+
+        const response =
+            availabilitySnap.child(player.key).val();
+
+        if(!response) return;
+
+        if(response.status !== "available") return;
+
+       const row = document.createElement("div");
+
+row.className = "squad-player-card " + response.status;
+
+row.innerHTML = `
+
+<div class="player-card-content">
+
+    <input
+        type="checkbox"
+        value="${player.key}"
+        onchange="togglePlayer(this)">
+
+    <div class="player-info">
+
+        <div class="player-name">
+
+            ${data.name}
+
+        </div>
+
+        <div class="player-position">
+
+            ${data.position}
+
+        </div>
+
+    </div>
+
+    <div class="availability-label">
+
+        ${response.status.toUpperCase()}
+
+    </div>
+
+</div>
+
+`;
+
+               container.appendChild(row);
+
+    });
+
+})
+
+.catch(error => {
+
+    console.error(error);
+
+});
+
+// ===============================
+// SELECT PLAYERS
+// ===============================
+
+function togglePlayer(box){
+
+    if(box.checked){
+
+        selectedPlayers.push(box.value);
+
+    }else{
+
+        selectedPlayers =
+            selectedPlayers.filter(
+                id => id !== box.value
+            );
+
+    }
+
+    document.getElementById(
+        "selectedCount"
+    ).textContent =
+
+        selectedPlayers.length +
+        " Players Selected";
+
+}
+
+// ===============================
+// BACK BUTTON
+// ===============================
+
+function goBack(){
+
+    window.location.href =
+    "manager-availability.html";
+
+}
+
+</script>
+
+</body>
+</html>
