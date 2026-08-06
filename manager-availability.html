@@ -244,6 +244,79 @@ if(match){
 
 }
 
+// ===============================
+// LOAD TEAM AVAILABILITY
+// ===============================
+
+Promise.all([
+
+    db.ref("players").get(),
+
+    db.ref("fixtures/" + match.fixtureID + "/availability").get()
+
+])
+
+.then(([playersSnap, availabilitySnap]) => {
+
+    let available = 0;
+    let late = 0;
+    let unavailable = 0;
+    let noResponse = 0;
+
+    playersSnap.forEach(player => {
+
+        const playerID = player.key;
+
+        const response =
+            availabilitySnap.child(playerID).val();
+
+        if(!response){
+
+            noResponse++;
+            return;
+
+        }
+
+        switch(response.status){
+
+            case "available":
+                available++;
+                break;
+
+            case "late":
+                late++;
+                break;
+
+            case "unavailable":
+                unavailable++;
+                break;
+
+            default:
+                noResponse++;
+
+        }
+
+    });
+
+    document.getElementById("availableCount").textContent =
+        available;
+
+    document.getElementById("lateCount").textContent =
+        late;
+
+    document.getElementById("unavailableCount").textContent =
+        unavailable;
+
+    document.getElementById("noResponseCount").textContent =
+        noResponse;
+
+})
+
+.catch(error=>{
+
+    console.error(error);
+
+});
 
 // ===============================
 // LOAD EXISTING AVAILABILITY
