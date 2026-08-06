@@ -1243,6 +1243,15 @@ color:#002366;
 
 }
 
+.player-updated{
+
+    margin-top:10px;
+
+    font-size:14px;
+
+    color:#777;
+
+}
 
 /* STATUS */
 
@@ -1261,9 +1270,11 @@ color:#002366;
 
 .player-updated{
 
+    margin-top:10px;
+
     font-size:14px;
 
-    color:#666;
+    color:#777;
 
 }
 
