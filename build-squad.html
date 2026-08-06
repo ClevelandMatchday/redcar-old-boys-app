@@ -84,20 +84,32 @@
         <div class="section">
 
             <button
-                class="menu-button"
-                id="saveSquad">
+class="menu-button"
+id="saveSquad">
 
-                💾 Save Squad
+💾 Save Squad
 
-            </button>
+</button>
 
-            <button
-                class="menu-button"
-                onclick="goBack()">
 
-                Back to Team Availability
+<button
+class="menu-button"
+id="teamSheetButton"
+style="display:none;"
+onclick="goToTeamSheet()">
 
-            </button>
+⚽ Create Team Sheet
+
+</button>
+
+
+<button
+class="menu-button"
+onclick="goBack()">
+
+Back to Team Availability
+
+</button>
 
         </div>
 
@@ -346,7 +358,6 @@ document.getElementById("saveSquad")
     });
 
 
-
     db.ref(
         "fixtures/" +
         match.fixtureID +
@@ -358,34 +369,17 @@ document.getElementById("saveSquad")
 
     .then(()=>{
 
-
-        alert("Squad saved successfully");
-
-document.getElementById("teamSheetButton")
-.style.display = "block";
-
-<button
-class="menu-button"
-id="teamSheetButton"
-style="display:none;"
-onclick="goToTeamSheet()">
-
-⚽ Create Team Sheet
-
-</button>
-
-function goToTeamSheet(){
-
-window.location.href="team-sheet.html";
-
-}
-
-
-
         console.log(
             "Saved squad:",
             squadData
         );
+
+
+        alert("Squad saved successfully");
+
+
+        document.getElementById("teamSheetButton")
+        .style.display = "block";
 
 
     })
@@ -409,6 +403,7 @@ window.location.href="team-sheet.html";
 
 
 });
+
 
 // ===============================
 // SELECT PLAYERS
@@ -435,6 +430,17 @@ function togglePlayer(box){
 
         selectedPlayers.length +
         " Players Selected";
+
+}
+
+// ===============================
+// TEAM SHEET BUTTON
+// ===============================
+
+function goToTeamSheet(){
+
+    window.location.href =
+    "team-sheet.html";
 
 }
 
