@@ -1083,3 +1083,57 @@ color:#666;
 font-size:16px;
 
 }
+
+/* ===============================
+TEAM RESPONSE PROGRESS BAR
+=============================== */
+
+
+.response-progress{
+
+text-align:center;
+
+}
+
+
+.progress-bar{
+
+width:90%;
+
+height:18px;
+
+background:#ddd;
+
+border-radius:20px;
+
+margin:15px auto;
+
+overflow:hidden;
+
+}
+
+
+.progress-fill{
+
+height:100%;
+
+width:0%;
+
+background:#2ecc71;
+
+border-radius:20px;
+
+transition:width 0.5s ease;
+
+}
+
+
+#responsePercentage{
+
+font-size:18px;
+
+font-weight:600;
+
+color:#002366;
+
+}
