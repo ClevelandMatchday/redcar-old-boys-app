@@ -64,7 +64,10 @@ function submitPin() {
             const player = childSnapshot.val();
 
 
-            if(player.pin.toString() === enteredPin){
+            if(
+    player.pin.toString() === enteredPin &&
+    player.active === true
+){
 
     foundPlayer = player;
     playerID = childSnapshot.key;
