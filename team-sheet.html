@@ -107,15 +107,13 @@ Loading squad...
 
 <div class="summary-card available">
 
-<div
-class="summary-number"
-id="starterCount">
+<div id="starterCount">
 
 0
 
 </div>
 
-<div class="summary-label">
+<div>
 
 Starters
 
@@ -125,15 +123,13 @@ Starters
 
 <div class="summary-card late">
 
-<div
-class="summary-number"
-id="subCount">
+<div id="subCount">
 
 0
 
 </div>
 
-<div class="summary-label">
+<div>
 
 Subs
 
@@ -206,6 +202,11 @@ const match = JSON.parse(
     localStorage.getItem("selectedMatch")
 );
 
+// ===============================
+// TEAM SHEET DATA
+// ===============================
+
+let playerRoles = {};
 
 // ===============================
 // DATE FORMAT
@@ -300,23 +301,139 @@ Promise.all([
 
 <div class="player-name">
 
-${data.name}
+    ${data.name}
+
+</div>
+
+<div class="preferred-position-title">
+
+    Preferred Position
 
 </div>
 
 <div class="player-position">
 
-${data.position}
+    ${data.position}
 
 </div>
 
-`;
+<div class="match-position-title">
+
+    Match Position
+
+</div>
+
+<select class="match-position-select">
+
+    <option value="">Select Position</option>
+
+    <option>Goalkeeper</option>
+
+    <option>Left Back</option>
+    
+    <option>Centre Back</option>
+
+    <option>Right Back</option>
+
+    <option>Left Wing Back</option>
+
+    <option>Right Wing Back</option>
+
+    <option>Defensive Midfield</option>
+
+    <option>Central Midfield</option>
+
+    <option>Attacking Midfield</option>
+
+    <option>Left Wing</option>
+
+    <option>Right Wing</option>
+
+    <option>Striker</option>
+
+</select>
+
+<div class="player-role-title">
+
+    Match Role
+
+</div>
+
+<div class="player-role">
+
+    <label>
+
+        <input
+            type="radio"
+            name="role_${player.key}"
+            value="starter"
+            onchange="updateRole('${player.key}','starter')">
+
+        Starter
+
+    </label>
+
+    <label>
+
+        <input
+            type="radio"
+            name="role_${player.key}"
+            value="sub"
+            onchange="updateRole('${player.key}','sub')">
+
+        Substitute
+
+    </label>
+
+</div>
+
+`; 
 
         container.appendChild(card);
+
+        updateSummary();
 
     });
 
 });
+
+// ===============================
+// UPDATE PLAYER ROLE
+// ===============================
+
+function updateRole(playerID, role){
+
+    playerRoles[playerID] = role;
+
+    updateSummary();
+
+}
+
+
+// ===============================
+// UPDATE TEAM SUMMARY
+// ===============================
+
+function updateSummary(){
+
+    let starters = 0;
+    let subs = 0;
+
+    Object.values(playerRoles).forEach(role=>{
+
+        if(role==="starter") starters++;
+
+        if(role==="sub") subs++;
+
+    });
+
+    document.getElementById("starterCount").textContent =
+        starters;
+
+    document.getElementById("subCount").textContent =
+        subs;
+
+}
 
 function goBack(){
 

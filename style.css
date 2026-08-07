@@ -1489,3 +1489,87 @@ color:#002366;
     color:#555;
 
 }
+
+.preferred-position-title{
+
+    margin-top:18px;
+
+    font-size:14px;
+
+    color:#777;
+
+    font-weight:600;
+
+}
+
+.match-position-title{
+
+    margin-top:18px;
+
+    margin-bottom:8px;
+
+    font-size:14px;
+
+    color:#777;
+
+    font-weight:600;
+
+}
+
+.match-position-select{
+
+    width:100%;
+
+    padding:12px;
+
+    border-radius:10px;
+
+    border:2px solid #d9d9d9;
+
+    font-size:16px;
+
+    text-align:center;
+
+    font-weight:600;
+
+    background:white;
+
+}
+
+.player-role-title{
+
+    margin-top:18px;
+
+    margin-bottom:8px;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    color:#777;
+
+}
+
+.player-role{
+
+    display:flex;
+
+    justify-content:space-around;
+
+    margin-bottom:12px;
+
+}
+
+.player-role label{
+
+    font-weight:600;
+
+    color:#002366;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:6px;
+
+}
