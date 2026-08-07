@@ -258,6 +258,66 @@ if(match){
 
 }
 
+// ===============================
+// LOAD SELECTED SQUAD
+// ===============================
+
+Promise.all([
+
+    db.ref("players").get(),
+
+    db.ref(
+        "fixtures/" +
+        match.fixtureID +
+        "/squad"
+    ).get()
+
+])
+
+.then(([playersSnap, squadSnap]) => {
+
+    const container =
+        document.getElementById("selectedSquad");
+
+    container.innerHTML = "";
+
+    const squad =
+        squadSnap.val() || {};
+
+    playersSnap.forEach(player => {
+
+        if(!squad[player.key]) return;
+
+        const data = player.val();
+
+        const card =
+            document.createElement("div");
+
+        card.className =
+            "team-player-card";
+
+        card.innerHTML = `
+
+<div class="player-name">
+
+${data.name}
+
+</div>
+
+<div class="player-position">
+
+${data.position}
+
+</div>
+
+`;
+
+        container.appendChild(card);
+
+    });
+
+});
+
 function goBack(){
 
     window.location.href =

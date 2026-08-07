@@ -1451,3 +1451,41 @@ color:#002366;
     color:#1E9E48;
 
 }
+
+.team-player-card{
+
+    background:#f7fff7;
+
+    border:2px solid #2ebf55;
+
+    border-radius:14px;
+
+    padding:16px;
+
+    margin-bottom:15px;
+
+    text-align:center;
+
+}
+
+.team-player-card .player-name{
+
+    font-size:28px;
+
+    font-weight:bold;
+
+    color:#002366;
+
+}
+
+.team-player-card .player-position{
+
+    margin-top:6px;
+
+    font-size:18px;
+
+    font-weight:600;
+
+    color:#555;
+
+}
