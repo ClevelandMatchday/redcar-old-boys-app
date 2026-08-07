@@ -257,6 +257,10 @@ const match = JSON.parse(
 
 let playerRoles = {};
 
+let selectedCaptain = "";
+
+let teamSheet = {};
+
 // ===============================
 // DATE FORMAT
 // ===============================
@@ -440,6 +444,19 @@ Promise.all([
 
 </div>
 
+<div class="captain-section">
+
+    <button
+    class="captain-button"
+    id="captain_${player.key}"
+    onclick="selectCaptain('${player.key}')">
+
+    🏳 Select Captain
+
+    </button>
+
+</div>
+
 `; 
 
         container.appendChild(card);
@@ -462,6 +479,42 @@ function updateRole(playerID, role){
 
 }
 
+function selectCaptain(playerID){
+
+
+    selectedCaptain = playerID;
+
+
+    document
+    .querySelectorAll(".captain-button")
+    .forEach(button=>{
+
+        button.textContent =
+        "🏳 Select Captain";
+
+        button.classList.remove(
+            "captain-selected"
+        );
+
+    });
+
+
+
+    const selectedButton =
+    document.getElementById(
+        "captain_" + playerID
+    );
+
+
+    selectedButton.textContent =
+    "⭐ Captain";
+
+    selectedButton.classList.add(
+        "captain-selected"
+    );
+
+
+}
 
 // ===============================
 // UPDATE TEAM SUMMARY
