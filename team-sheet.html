@@ -193,6 +193,55 @@ firebase.initializeApp(firebaseConfig);
 
 const db = firebase.database();
 
+// ===============================
+// POSITION NAME LOOKUP
+// ===============================
+
+const positionNames = {
+
+    GK: "Goalkeeper",
+    LB: "Left Back",
+    CB: "Centre Back",
+    RB: "Right Back",
+    FB: "Full Back",
+
+    LWB: "Left Wing Back",
+    RWB: "Right Wing Back",
+
+    DM: "Defensive Midfield",
+    CM: "Central Midfield",
+    AM: "Attacking Midfield",
+
+    LW: "Left Wing",
+    RW: "Right Wing",
+
+    ST: "Striker"
+
+};
+
+const positionColours = {
+
+    GK: "position-gk",
+
+    CB: "position-def",
+    FB: "position-def",
+    LB: "position-def",
+    RB: "position-def",
+    LWB: "position-def",
+    RWB: "position-def",
+
+    DM: "position-mid",
+    CM: "position-mid",
+    AM: "position-mid",
+    LM: "position-mid",
+    RM: "position-mid",
+
+    LW: "position-att",
+    RW: "position-att",
+    ST: "position-att"
+
+};
+
 
 // ===============================
 // CURRENT MATCH
@@ -313,7 +362,11 @@ Promise.all([
 
 <div class="player-position">
 
-    ${data.position}
+    <span class="position-pill ${positionColours[data.position]}">
+
+        ${positionNames[data.position] || data.position}
+
+    </span>
 
 </div>
 
