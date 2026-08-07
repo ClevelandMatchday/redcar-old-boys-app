@@ -156,6 +156,7 @@ id="saveTeamSheet">
 
 </button>
 
+
 <button
 class="menu-button"
 onclick="goBack()">
@@ -256,6 +257,8 @@ const match = JSON.parse(
 // ===============================
 
 let playerRoles = {};
+
+let playerPositions = {};
 
 let selectedCaptain = "";
 
@@ -380,8 +383,9 @@ Promise.all([
 
 </div>
 
-<select class="match-position-select">
-
+<select 
+class="match-position-select"
+onchange="updatePosition('${player.key}', this.value)">
     <option value="">Select Position</option>
 
     <option>Goalkeeper</option>
@@ -479,6 +483,16 @@ function updateRole(playerID, role){
 
 }
 
+// ===============================
+// UPDATE PLAYER POSITION
+// ===============================
+
+function updatePosition(playerID, position){
+
+    playerPositions[playerID] = position;
+
+}
+
 function selectCaptain(playerID){
 
 
@@ -515,6 +529,197 @@ function selectCaptain(playerID){
 
 
 }
+
+// ===============================
+// BUILD TEAM SHEET OBJECT
+// ===============================
+
+function buildTeamSheet(){
+
+    teamSheet = {};
+
+
+    Object.keys(playerRoles).forEach(playerID => {
+
+
+        teamSheet[playerID] = {
+
+
+            role:
+            playerRoles[playerID],
+
+
+            position:
+            playerPositions[playerID] || "",
+
+
+            captain:
+            playerID === selectedCaptain
+
+
+        };
+
+
+    });
+
+
+    console.log(
+        "Final Team Sheet:",
+        teamSheet
+    );
+
+
+}
+
+// ===============================
+// VALIDATE TEAM SHEET
+// ===============================
+
+function validateTeamSheet(){
+
+
+    let starters = 0;
+    let subs = 0;
+    let captainCount = 0;;
+
+
+    Object.keys(teamSheet).forEach(playerID => {
+
+
+        const player = teamSheet[playerID];
+
+
+        if(player.role === "starter"){
+
+            starters++;
+
+        }
+
+
+        if(player.captain === true){
+
+        captainCount++;
+
+        }
+
+
+        if(
+            player.role === "starter" &&
+            player.position === ""
+        ){
+
+            alert(
+            "All starters must have a match position selected."
+            );
+
+            return false;
+
+        }
+
+
+    });
+
+
+    if(starters === 0){
+
+        alert(
+        "Please select at least one starter."
+        );
+
+        return false;
+
+    }
+
+
+    if(captainCount === 0){
+
+    alert(
+    "Please select a captain."
+    );
+
+    return false;
+
+    }
+
+
+    if(captainCount > 1){
+
+    alert(
+    "Only one captain can be selected."
+    );
+
+    return false;
+
+    }
+
+
+    return true;
+
+}
+
+// ===============================
+// SAVE TEAM SHEET TO FIREBASE
+// ===============================
+
+document
+.getElementById("saveTeamSheet")
+.addEventListener("click", function(){
+
+
+    buildTeamSheet();
+
+
+    if(!validateTeamSheet()){
+
+        return;
+
+    }
+
+
+    db.ref(
+        "fixtures/" +
+        match.fixtureID +
+        "/teamSheet"
+    )
+
+    .set(teamSheet)
+
+
+    .then(()=>{
+
+
+        alert(
+        "Team Sheet saved successfully"
+        );
+
+
+        console.log(
+        "Saved Team Sheet:",
+        teamSheet
+        );
+
+
+    })
+
+
+    .catch(error=>{
+
+
+        console.error(
+        "Saving Team Sheet failed:",
+        error
+        );
+
+
+        alert(
+        "Unable to save Team Sheet"
+        );
+
+
+    });
+
+
+});
 
 // ===============================
 // UPDATE TEAM SUMMARY
