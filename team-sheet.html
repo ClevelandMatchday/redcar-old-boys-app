@@ -327,12 +327,17 @@ Promise.all([
         "fixtures/" +
         match.fixtureID +
         "/squad"
+    ).get(),
+
+    db.ref(
+        "fixtures/" +
+        match.fixtureID +
+        "/teamSheet"
     ).get()
 
 ])
 
-.then(([playersSnap, squadSnap]) => {
-
+.then(([playersSnap, squadSnap, teamSheetSnap]) => {
     const container =
         document.getElementById("selectedSquad");
 
@@ -341,11 +346,35 @@ Promise.all([
     const squad =
         squadSnap.val() || {};
 
+    const savedTeamSheet = teamSheetSnap.val() || {};
+
+    console.log("Saved Team Sheet:", savedTeamSheet);
+
     playersSnap.forEach(player => {
 
         if(!squad[player.key]) return;
 
         const data = player.val();
+
+        const savedPlayer = savedTeamSheet[player.key] || {};
+
+if(savedPlayer.position){
+
+    playerPositions[player.key] = savedPlayer.position;
+
+}
+
+if(savedPlayer.role){
+
+    playerRoles[player.key] = savedPlayer.role;
+
+}
+
+if(savedPlayer.captain){
+
+    selectedCaptain = player.key;
+
+}
 
         const card =
             document.createElement("div");
@@ -386,31 +415,74 @@ Promise.all([
 <select 
 class="match-position-select"
 onchange="updatePosition('${player.key}', this.value)">
+    
     <option value="">Select Position</option>
 
-    <option>Goalkeeper</option>
+    <option value="Goalkeeper"
+    ${savedPlayer.position==="Goalkeeper" ? "selected" : ""}>
+    Goalkeeper
+    </option>
 
-    <option>Left Back</option>
+    <option value="Left Back"
+    ${savedPlayer.position==="Left Back" ? "selected" : ""}>
+    Left Back
+    </option>
     
-    <option>Centre Back</option>
+    <option value="Centre Back"
+    ${savedPlayer.position==="Centre Back" ? "selected" : ""}>
+    Centre Back
+    </option>
 
-    <option>Right Back</option>
+    <option value="Right Back"
+    ${savedPlayer.position==="Right Back" ? "selected" : ""}>
+    Right Back
+    </option>
 
-    <option>Left Wing Back</option>
+    <option value="Left Wing Back"
+    ${savedPlayer.position==="Left Wing Back" ? "selected" : ""}>
+    Left Wing Back
+    </option>
 
-    <option>Right Wing Back</option>
+    <option value="Right Wing Back"
+    ${savedPlayer.position==="Right Wing Back" ? "selected" : ""}>
+    Right Wing Back
+    </option>
 
-    <option>Defensive Midfield</option>
 
-    <option>Central Midfield</option>
+    <option value="Defensive Midfield"
+    ${savedPlayer.position==="Defensive Midfield" ? "selected" : ""}>
+    Defensive Midfield
+    </option>
 
-    <option>Attacking Midfield</option>
 
-    <option>Left Wing</option>
+    <option value="Central Midfield"
+    ${savedPlayer.position==="Central Midfield" ? "selected" : ""}>
+    Central Midfield
+    </option>
 
-    <option>Right Wing</option>
 
-    <option>Striker</option>
+    <option value="Attacking Midfield"
+    ${savedPlayer.position==="Attacking Midfield" ? "selected" : ""}>
+    Attacking Midfield
+    </option>
+
+
+    <option value="Left Wing"
+    ${savedPlayer.position==="Left Wing" ? "selected" : ""}>
+    Left Wing
+    </option>
+
+
+    <option value="Right Wing"
+    ${savedPlayer.position==="Right Wing" ? "selected" : ""}>
+    Right Wing
+    </option>
+
+    <option value="Striker"
+    ${savedPlayer.position==="Striker" ? "selected" : ""}>
+    Striker
+    </option>
+
 
 </select>
 
@@ -425,10 +497,11 @@ onchange="updatePosition('${player.key}', this.value)">
     <label>
 
         <input
-            type="radio"
-            name="role_${player.key}"
-            value="starter"
-            onchange="updateRole('${player.key}','starter')">
+type="radio"
+name="role_${player.key}"
+value="starter"
+${savedPlayer.role==="starter" ? "checked" : ""}
+onchange="updateRole('${player.key}','starter')">
 
         Starter
 
@@ -436,26 +509,27 @@ onchange="updatePosition('${player.key}', this.value)">
 
     <label>
 
-        <input
-            type="radio"
-            name="role_${player.key}"
-            value="sub"
-            onchange="updateRole('${player.key}','sub')">
+<input
+type="radio"
+name="role_${player.key}"
+value="sub"
+${savedPlayer.role==="sub" ? "checked" : ""}
+onchange="updateRole('${player.key}','sub')">
 
-        Substitute
+Substitute
 
-    </label>
+</label>
 
 </div>
 
 <div class="captain-section">
 
     <button
-    class="captain-button"
+    class="captain-button ${savedPlayer.captain ? 'captain-selected' : ''}"
     id="captain_${player.key}"
     onclick="selectCaptain('${player.key}')">
 
-    🏳 Select Captain
+    ${savedPlayer.captain ? "⭐ Captain" : "🎖 Select Captain"}
 
     </button>
 
@@ -465,10 +539,11 @@ onchange="updatePosition('${player.key}', this.value)">
 
         container.appendChild(card);
 
-        updateSummary();
-
     });
 
+        updateSummary();
+
+   
 });
 
 // ===============================
