@@ -306,22 +306,39 @@ function loadFormation(formation){
     const pitchArea =
     document.getElementById("pitchArea");
 
-
-    if(!pitchArea){
-
-        console.error(
-        "pitchArea element not found"
-        );
-
-        return;
-
-    }
-
-
     pitchArea.innerHTML = "";
 
 
+    let assignedPlayers = [];
+
+
     formations[formation].forEach(position=>{
+
+
+        let assignedPlayer = null;
+
+
+        Object.keys(teamSheet).forEach(playerID=>{
+
+
+            const player = teamSheet[playerID];
+
+
+            if(
+                !assignedPlayers.includes(playerID) &&
+                player.role === "starter" &&
+                player.position === position
+            ){
+
+                assignedPlayer = playerID;
+
+                assignedPlayers.push(playerID);
+
+            }
+
+
+        });
+
 
 
         const slot =
@@ -334,11 +351,20 @@ function loadFormation(formation){
 
         slot.innerHTML = `
 
+
         <strong>${position}</strong>
 
-        <div>
-        Select Player
+
+        <div class="formation-player">
+
+        ${
+            assignedPlayer
+            ? getPlayerName(assignedPlayer)
+            : "No player assigned"
+        }
+
         </div>
+
 
         `;
 
@@ -348,7 +374,23 @@ function loadFormation(formation){
 
     });
 
+
 }
+
+function getPlayerName(playerID){
+
+
+    const player =
+    firebase.database()
+    .ref("players/" + playerID);
+
+
+    return playerID;
+
+}
+
+        buildStartingXI();
+
 
 document
 .getElementById("formationSelect")
@@ -359,6 +401,67 @@ function(){
     loadFormation(this.value);
 
 });
+
+// ===============================
+// BUILD STARTING XI
+// ===============================
+
+function buildStartingXI(){
+
+    const slots =
+    document.querySelectorAll(".formation-slot");
+
+
+    slots.forEach(slot=>{
+
+        const position =
+        slot.querySelector("strong").textContent;
+
+
+        const playerArea =
+        slot.querySelector(".formation-player");
+
+
+        let foundPlayer = null;
+
+
+        Object.keys(teamSheet).forEach(playerID=>{
+
+
+            const player =
+            teamSheet[playerID];
+
+
+            if(
+                player.role === "starter" &&
+                player.position === position
+            ){
+
+                foundPlayer = playerID;
+
+            }
+
+
+        });
+
+
+        if(foundPlayer){
+
+            playerArea.textContent =
+            foundPlayer;
+
+        }
+        else{
+
+            playerArea.textContent =
+            "No player assigned";
+
+        }
+
+
+    });
+
+}
 
 // ===============================
 // POSITION NAME LOOKUP
@@ -429,6 +532,8 @@ let playerPositions = {};
 let selectedCaptain = "";
 
 let teamSheet = {};
+
+let savedTeamSheet = {};
 
 // ===============================
 // DATE FORMAT
@@ -512,7 +617,13 @@ Promise.all([
     const squad =
         squadSnap.val() || {};
 
-    const savedTeamSheet = teamSheetSnap.val() || {};
+    savedTeamSheet =
+    teamSheetSnap.val() || {};
+
+    console.log(
+    "Saved Team Sheet:",
+    savedTeamSheet
+    );
 
     console.log("Saved Team Sheet:", savedTeamSheet);
 
@@ -574,7 +685,7 @@ if(savedPlayer.captain){
 
 <div class="match-position-title">
 
-    Match Position
+    Playing Position
 
 </div>
 
@@ -705,10 +816,36 @@ Substitute
 
         container.appendChild(card);
 
+if(savedPlayer.role){
+
+    playerRoles[player.key] =
+    savedPlayer.role;
+
+}
+
+if(savedPlayer.position){
+
+    playerPositions[player.key] =
+    savedPlayer.position;
+
+}
+
+if(savedPlayer.captain){
+
+    selectedCaptain =
+    player.key;
+
+}
+
     });
 
-        updateSummary();
+       updateSummary();
 
+buildTeamSheet();
+
+loadFormation(
+    document.getElementById("formationSelect").value
+);
    
 });
 
