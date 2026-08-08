@@ -252,6 +252,115 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
 // ===============================
+// FORMATION STRUCTURE
+// ===============================
+
+const formations = {
+
+    "4-4-2":[
+
+        "Goalkeeper",
+
+        "Left Back",
+        "Centre Back",
+        "Centre Back",
+        "Right Back",
+
+        "Left Midfield",
+        "Centre Midfield",
+        "Centre Midfield",
+        "Right Midfield",
+
+        "Striker",
+        "Striker"
+
+    ],
+
+    "4-3-3":[
+
+        "Goalkeeper",
+
+        "Left Back",
+        "Centre Back",
+        "Centre Back",
+        "Right Back",
+
+        "Central Midfield",
+        "Central Midfield",
+        "Central Midfield",
+
+        "Left Wing",
+        "Striker",
+        "Right Wing"
+
+    ]
+
+};
+
+// ===============================
+// DISPLAY FORMATION
+// ===============================
+
+function loadFormation(formation){
+
+    const pitchArea =
+    document.getElementById("pitchArea");
+
+
+    if(!pitchArea){
+
+        console.error(
+        "pitchArea element not found"
+        );
+
+        return;
+
+    }
+
+
+    pitchArea.innerHTML = "";
+
+
+    formations[formation].forEach(position=>{
+
+
+        const slot =
+        document.createElement("div");
+
+
+        slot.className =
+        "formation-slot";
+
+
+        slot.innerHTML = `
+
+        <strong>${position}</strong>
+
+        <div>
+        Select Player
+        </div>
+
+        `;
+
+
+        pitchArea.appendChild(slot);
+
+
+    });
+
+}
+
+document
+.getElementById("formationSelect")
+.addEventListener(
+"change",
+function(){
+
+    loadFormation(this.value);
+
+});
+
+// ===============================
 // POSITION NAME LOOKUP
 // ===============================
 
@@ -884,6 +993,8 @@ function goBack(){
     "build-squad.html";
 
 }
+
+loadFormation("4-4-2");
 
 </script>
 
